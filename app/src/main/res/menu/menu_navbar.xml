@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/mainFeatures"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/notes"
+            android:title="@string/notes"
+            android:icon="@drawable/ic_note_black_24dp" />
+
+        <item
+            android:id="@+id/reminders"
+            android:title="@string/reminders"
+            android:icon="@drawable/ic_reminder_black_24dp" />
+
+        <item
+            android:id="@+id/starred"
+            android:title="@string/starred_notes"
+            android:icon="@drawable/ic_star_black_24dp" />
+
+        <item
+            android:id="@+id/tags"
+            android:title="@string/tags"
+            android:icon="@drawable/ic_tag_black_24dp" />
+
+        <item
+            android:id="@+id/trash"
+            android:title="@string/trash"
+            android:icon="@drawable/ic_delete_black_24dp" />
+
+    </group>
+
+    <group
+        android:id="@+id/settingsGroup"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/settings"
+            android:title="@string/settings"
+            android:icon="@drawable/ic_settings_black_24dp" />
+
+    </group>
+
+</menu>

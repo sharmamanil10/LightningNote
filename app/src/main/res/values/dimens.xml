@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General Padding Margin Dimensions -->
+    <dimen name="padding_margin_xl">72dp</dimen>
+    <dimen name="padding_margin_large">48dp</dimen>
+    <dimen name="padding_margin_moderate">32dp</dimen>
+    <dimen name="padding_margin_default">16dp</dimen>
+    <dimen name="padding_margin_small">8dp</dimen>
+    <dimen name="padding_margin_xs">4dp</dimen>
+
+    <!-- General Text Sizes -->
+    <dimen name="size_text_header">24sp</dimen>
+    <dimen name="size_text_default">16sp</dimen>
+    <dimen name="size_text_supporting">14sp</dimen>
+    <dimen name="size_text_small">12sp</dimen>
+
+    <!-- General Image Sizes -->
+    <dimen name="size_image_large">48dp</dimen>
+    <dimen name="size_image_default">40dp</dimen>
+
+    <!-- General Heights of List Items -->
+    <dimen name="height_list_avatar">56dp</dimen>
+    <dimen name="height_list_default">48dp</dimen>
+
+    <!-- General CardView Properties -->
+    <dimen name="radius_elevation_xl">8dp</dimen>
+    <dimen name="radius_elevation_large">4dp</dimen>
+    <dimen name="radius_elevation_default">2dp</dimen>
+
+    <!-- Sizes of Special Objects -->
+    <dimen name="navbar_header_height">160dp</dimen>
+</resources>

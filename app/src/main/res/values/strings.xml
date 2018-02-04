@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Lightning Note</string>
+
+    <!-- Drawer Toggle Strings -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Main NavBar Menu Strings -->
+    <string name="notes">Notes</string>
+    <string name="reminders">Reminders</string>
+    <string name="starred_notes">Starred Notes</string>
+    <string name="tags">Tags</string>
+    <string name="trash">Trash</string>
+    <string name="settings">Settings</string>
+
+    <!-- SharedPreferences Categories -->
+    <string name="theme_appearance">Themes and Appearance</string>
+    <string name="about">About</string>
+
+    <!-- SharedPreferences Keys -->
+    <string name="key_theme">selectTheme</string>
+    <string name="key_about_app">aboutApp</string>
+
+    <!-- SharedPreferences Names and Summaries -->
+    <string name="theme">Theme</string>
+    <string name="theme_summary">Change the Theme of the App</string>
+
+    <string name="about_app">About App</string>
+
+    <!-- Strings for Implementing Dynamic Theme in App -->
+    <string name="theme_default">Default</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_red">Red</string>
+    <string name="theme_teal">Teal</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_purple">Purple</string>
+
+    <string-array name="theme_entries">
+        <item>@string/theme_default</item>
+        <item>@string/theme_dark</item>
+        <item>@string/theme_red</item>
+        <item>@string/theme_teal</item>
+        <item>@string/theme_green</item>
+        <item>@string/theme_blue</item>
+        <item>@string/theme_purple</item>
+    </string-array>
+
+    <!-- Add Note Strings -->
+    <string name="add_reminder">Add Reminder</string>
+    <string name="note_title">Note Title</string>
+    <string name="note_body">Content</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
