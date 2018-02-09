@@ -51,6 +51,17 @@
     <string name="note_title">Note Title</string>
     <string name="note_body">Content</string>
 
+    <!-- Note Menu Strings -->
+    <string name="note_copy">Copy Text to Clipboard</string>
+    <string name="note_copy_condensed">Copy Text</string>
+    <string name="note_share">Share</string>
+    <string name="note_delete">Delete</string>
+    <string name="text_copied">Text Copied to Clipboard</string>
+
+    <!-- List Style Strings -->
+    <string name="list_style">See as A List</string>
+    <string name="grid_style">See as A Grid</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

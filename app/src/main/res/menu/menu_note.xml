@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/noteShare"
+        android:title="@string/note_share"
+        android:icon="@drawable/ic_share_black_24dp" />
+
+    <item
+        android:id="@+id/noteCopy"
+        android:title="@string/note_copy"
+        android:titleCondensed="@string/note_copy_condensed"
+        android:icon="@drawable/ic_content_copy_black_24dp" />
+
+    <item
+        android:id="@+id/noteDelete"
+        android:title="@string/note_delete"
+        android:icon="@drawable/ic_delete_black_24dp" />
+
+</menu>

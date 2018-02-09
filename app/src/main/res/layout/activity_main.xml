@@ -20,14 +20,29 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.AppBarLayout>
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabAddNotes"
+                android:src="@drawable/ic_add_black_24dp"
+                android:tint="@color/white"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/padding_margin_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_behavior=".utils.FloatingActionButtonHideOnScrollBehaviour"
+                android:clickable="true"
+                android:focusable="true"
+                app:rippleColor="@color/white" />
 
         </android.support.design.widget.CoordinatorLayout>
 

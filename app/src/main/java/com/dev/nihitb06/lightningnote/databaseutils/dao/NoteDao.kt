@@ -7,22 +7,25 @@ import com.dev.nihitb06.lightningnote.databaseutils.extramodels.NoteListDetail
 @Dao
 interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertNote(note: Note)
+    fun insertNote(note: Note): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateNote(note: Note)
+    fun updateNote(note: Note): Int
 
-    fun upsertNote(note: Note) {
+    /*fun upsertNote(note: Note) {
         insertNote(note)
         updateNote(note)
-    }
+    }*/
+
+    @Delete
+    fun deleteNote(note: Note): Int
 
     @Query("SELECT * FROM Notes WHERE id = :noteId")
     fun getNoteById(noteId: String): Note
 
-    @Query("SELECT id, title, body, dateModified FROM Notes")
-    fun getNotesForList(): ArrayList<NoteListDetail>
+    /*@Query("SELECT id, title, body, dateModified FROM Notes")
+    fun getNotesForList(): ArrayList<NoteListDetail>*/
 
     @Query("SELECT * FROM Notes")
-    fun getAllNotes(): ArrayList<Note>
+    fun getAllNotes(): List<Note>
 }

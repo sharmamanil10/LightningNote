@@ -12,19 +12,19 @@ abstract class LightningNoteDatabase : RoomDatabase () {
 
     abstract fun noteDao(): NoteDao
 
-    fun getDatabaseInstance(context: Context): RoomDatabase {
-        if (databaseInstance == null) {
-            databaseInstance = Room.databaseBuilder(
-                    context.applicationContext,
-                    LightningNoteDatabase::class.java,
-                    "LightningNoteDatabase"
-            ).build()
-        }
-
-        return databaseInstance!!
-    }
-
     companion object {
-        private var databaseInstance: RoomDatabase? = null
+        private var databaseInstance: LightningNoteDatabase? = null
+
+        fun getDatabaseInstance(context: Context): LightningNoteDatabase {
+            if (databaseInstance == null) {
+                databaseInstance = Room.databaseBuilder(
+                        context.applicationContext,
+                        LightningNoteDatabase::class.java,
+                        "LightningNoteDatabase"
+                ).build()
+            }
+
+            return databaseInstance!!
+        }
     }
 }
