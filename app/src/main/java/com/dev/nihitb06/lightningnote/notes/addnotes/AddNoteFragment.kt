@@ -84,6 +84,17 @@ class AddNoteFragment : Fragment() {
 
         setNoteTextChangeListeners(itemView)
 
+        itemView.starred.setOnClickListener {
+            thisNote.isStarred = !thisNote.isStarred
+
+            itemView.starred.setImageResource(
+                    if(thisNote.isStarred)
+                        R.drawable.ic_star_black_24dp
+                    else
+                        R.drawable.ic_star_border_black_24dp
+            )
+        }
+
         return itemView
     }
 

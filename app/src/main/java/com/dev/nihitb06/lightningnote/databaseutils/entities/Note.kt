@@ -8,6 +8,9 @@ data class Note (
         var title: String,
         var body: String
 ) {
-        @PrimaryKey ( autoGenerate = true )
-        var id: Long = 0
+    @PrimaryKey ( autoGenerate = true )
+    var id: Long = 0
+
+    var isStarred: Boolean = false
+    var isDeleted: Boolean = false
 }

@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.util.Log
 import android.view.*
 
 import com.dev.nihitb06.lightningnote.R
@@ -19,17 +20,20 @@ class NotesFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
 
     private var showOnlyStarred = false
+    private var showOnlyDeleted = false
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
     private lateinit var rvNotesList: RecyclerView
 
+    private var onFABClickListener: View.OnClickListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragmentContext)
 
-        linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager = LinearLayoutManager(fragmentContext)
 
         staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
@@ -47,9 +51,16 @@ class NotesFragment : Fragment() {
         else
             staggeredGridLayoutManager
 
-        rvNotesList.adapter = NotesRecyclerAdapter(activity)
+        rvNotesList.adapter = NotesRecyclerAdapter(activity, showOnlyStarred, showOnlyDeleted)
 
         setScroll()
+
+        if(showOnlyStarred || showOnlyDeleted)
+            itemView.fabAddNotes.visibility = View.GONE
+        else
+            itemView.fabAddNotes.setOnClickListener { v: View? ->  onFABClickListener?.onClick(v) }
+
+        Log.d("LATE_INIT", "onCreateView: ")
 
         return itemView
     }
@@ -101,13 +112,23 @@ class NotesFragment : Fragment() {
     companion object {
         private const val isListLinear = "IsListLinear"
 
-        fun newInstance(context: Context, showOnlyStarred: Boolean): NotesFragment {
+        fun newInstance(
+                context: Context,
+                showOnlyStarred: Boolean,
+                showOnlyDeleted: Boolean,
+                onFABClickListener: View.OnClickListener
+        ): NotesFragment {
             val fragment = NotesFragment()
+
+            Log.d("LATE_INIT", "newInstance: ")
 
             fragment.fragmentContext = context
             fragment.showOnlyStarred = showOnlyStarred
+            fragment.showOnlyDeleted = showOnlyDeleted
 
-            return NotesFragment()
+            fragment.onFABClickListener = onFABClickListener
+
+            return fragment
         }
     }
 }

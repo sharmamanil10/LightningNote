@@ -8,7 +8,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.LinearInterpolator
 import com.dev.nihitb06.lightningnote.appsettings.SettingsFragment
 import com.dev.nihitb06.lightningnote.databaseutils.LightningNoteDatabase
 import com.dev.nihitb06.lightningnote.notes.NotesFragment
@@ -25,6 +24,10 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
     private var backButtonShowing = false
     private lateinit var drawerToggle: MyActionBarDrawerToggle
 
+    private val onFABClickListener = View.OnClickListener {
+        Handler().postDelayed({ switchFragment(AddNoteFragment(), TAG_ADD) }, 200)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setNoActionBarTheme()
@@ -33,8 +36,6 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         setupToolbarAndNavigation()
 
         onNavigationItemSelected(navBarContainer.menu.findItem(R.id.notes))
-
-        fabAddNotes.setOnClickListener { switchFragment(AddNoteFragment(), TAG_ADD) }
     }
 
     private fun setupToolbarAndNavigation() {
@@ -60,11 +61,6 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
     private fun switchFragment(fragment: Fragment, fragmentTag: String) {
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment, fragmentTag).commit()
 
-        if(fragmentTag == TAG_NOTES || fragmentTag == TAG_STAR)
-            Handler().postDelayed({ fabAddNotes.visibility = View.VISIBLE }, 10)
-        else
-            fabAddNotes.visibility = View.INVISIBLE
-
         if(fragmentTag == TAG_ADD)
             manageBackButton(true)
         else if(backButtonShowing)
@@ -75,9 +71,11 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.notes -> switchFragment(NotesFragment.newInstance(this, false), TAG_NOTES)
+            R.id.notes -> switchFragment(NotesFragment.newInstance(this, false, false, onFABClickListener), TAG_NOTES)
 
-            R.id.starred -> switchFragment(NotesFragment.newInstance(this, true), TAG_STAR)
+            R.id.starred -> switchFragment(NotesFragment.newInstance(this, true, false, onFABClickListener), TAG_STAR)
+
+            R.id.trash -> switchFragment(NotesFragment.newInstance(this, false, true, onFABClickListener), TAG_TRASH)
 
             R.id.settings -> switchFragment(SettingsFragment.newInstance(), TAG_SETTINGS)
 
@@ -173,6 +171,7 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         private const val TAG_NOTES = "NotesFragment"
         private const val TAG_ADD = "AddNotesFragment"
         private const val TAG_STAR = "StarredNotesFragment"
+        private const val TAG_TRASH = "TrashNotesFragment"
         private const val TAG_SETTINGS = "SettingsFragment"
     }
 }

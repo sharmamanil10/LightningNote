@@ -12,11 +12,6 @@ interface NoteDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateNote(note: Note): Int
 
-    /*fun upsertNote(note: Note) {
-        insertNote(note)
-        updateNote(note)
-    }*/
-
     @Delete
     fun deleteNote(note: Note): Int
 
@@ -28,4 +23,13 @@ interface NoteDao {
 
     @Query("SELECT * FROM Notes")
     fun getAllNotes(): List<Note>
+
+    @Query("SELECT * FROM Notes WHERE isStarred = 1 AND isDeleted = 0")
+    fun getStarredNotes(): List<Note>
+
+    @Query("SELECT * FROM Notes WHERE isDeleted = 1")
+    fun getDeletedNotes(): List<Note>
+
+    @Query("SELECT * FROM Notes WHERE isDeleted = 0")
+    fun getUnDeletedNotes(): List<Note>
 }
