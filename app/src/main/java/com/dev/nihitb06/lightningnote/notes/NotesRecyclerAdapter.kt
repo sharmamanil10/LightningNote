@@ -1,6 +1,7 @@
 package com.dev.nihitb06.lightningnote.notes
 
 import android.app.Activity
+import android.app.Fragment
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,11 +10,17 @@ import android.view.ViewGroup
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.databaseutils.LightningNoteDatabase
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
-import com.dev.nihitb06.lightningnote.utils.NoteLongClickListenerSingleSelection
+import com.dev.nihitb06.lightningnote.notes.noteutils.NoteLongClickListenerSingleSelection
+import com.dev.nihitb06.lightningnote.notes.noteutils.OnNoteClickListener
 import kotlinx.android.synthetic.main.layout_note.view.*
 
-class NotesRecyclerAdapter (private val context: Context, private val onlyStarred: Boolean, private val onlyDeleted: Boolean)
-    : RecyclerView.Adapter<NotesRecyclerAdapter.NoteViewHolder> () {
+class NotesRecyclerAdapter (
+        private val context: Context,
+        private val onlyStarred: Boolean,
+        private val onlyDeleted: Boolean,
+        private val listEmptyView: View,
+        private val onNoteClickListener: OnNoteClickListener?
+) : RecyclerView.Adapter<NotesRecyclerAdapter.NoteViewHolder> () {
 
     private lateinit var notes: List<Note>
     private val visibleViews = ArrayList<View>()
@@ -32,7 +39,15 @@ class NotesRecyclerAdapter (private val context: Context, private val onlyStarre
             else -> LightningNoteDatabase.getDatabaseInstance(context).noteDao().getUnDeletedNotes()
         }
 
-        (context as Activity).runOnUiThread { notifyDataSetChanged() }
+        (context as Activity).runOnUiThread {
+            notifyDataSetChanged()
+            setEmptyPlaceholder()
+        }
+    }
+
+    private fun setEmptyPlaceholder() {
+        if(notes.isEmpty())
+            listEmptyView.visibility = View.VISIBLE
     }
 
     inner class NoteViewHolder (private val thisView: View) : RecyclerView.ViewHolder (thisView) {
@@ -45,11 +60,11 @@ class NotesRecyclerAdapter (private val context: Context, private val onlyStarre
             thisView.tvNoteTitle.text = note.title
             thisView.tvNoteBody.text = note.body
 
-            thisView.contentArea.setOnClickListener {  }
+            thisView.contentArea.setOnClickListener { onNoteClickListener?.onNoteClick(note.id) }
             thisView.contentArea.setOnLongClickListener {
                 NoteLongClickListenerSingleSelection(context, note, thisView, visibleViews, {
                     Thread {
-                        if(onlyDeleted)
+                        if (onlyDeleted)
                             LightningNoteDatabase.getDatabaseInstance(context).noteDao().deleteNote(note)
                         else {
                             note.isDeleted = true
@@ -97,7 +112,10 @@ class NotesRecyclerAdapter (private val context: Context, private val onlyStarre
         private fun removeNote(note: Note, position: Int) {
             visibleViews.remove(thisView)
             (notes as ArrayList).remove(note)
-            (context as Activity).runOnUiThread { notifyItemRemoved(position) }
+            (context as Activity).runOnUiThread {
+                notifyItemRemoved(position)
+                setEmptyPlaceholder()
+            }
         }
     }
 

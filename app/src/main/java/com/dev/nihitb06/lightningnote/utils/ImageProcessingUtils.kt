@@ -17,7 +17,7 @@ class ImageProcessingUtils {
 
         fun blurScreenshot(context: Context, view: View): Bitmap = blur(context, takeScreenshot(view))
 
-        fun takeScreenshot(view: View): Bitmap {
+        private fun takeScreenshot(view: View): Bitmap {
             val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
 

@@ -1,4 +1,4 @@
-package com.dev.nihitb06.lightningnote.utils
+package com.dev.nihitb06.lightningnote.notes.noteutils
 
 import android.animation.ObjectAnimator
 import android.app.Activity
@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
+import com.dev.nihitb06.lightningnote.utils.ImageProcessingUtils
 import kotlinx.android.synthetic.main.layout_note.view.*
 
 class NoteLongClickListenerSingleSelection (

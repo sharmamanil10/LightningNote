@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.*
 
 import com.dev.nihitb06.lightningnote.R
+import com.dev.nihitb06.lightningnote.notes.noteutils.OnNoteClickListener
 import kotlinx.android.synthetic.main.fragment_notes.view.*
 
 class NotesFragment : Fragment() {
@@ -27,13 +28,14 @@ class NotesFragment : Fragment() {
     private lateinit var rvNotesList: RecyclerView
 
     private var onFABClickListener: View.OnClickListener? = null
+    private var onNoteClickListener: OnNoteClickListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragmentContext)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
 
-        linearLayoutManager = LinearLayoutManager(fragmentContext)
+        linearLayoutManager = LinearLayoutManager(activity)
 
         staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
@@ -51,7 +53,7 @@ class NotesFragment : Fragment() {
         else
             staggeredGridLayoutManager
 
-        rvNotesList.adapter = NotesRecyclerAdapter(activity, showOnlyStarred, showOnlyDeleted)
+        rvNotesList.adapter = NotesRecyclerAdapter(activity, showOnlyStarred, showOnlyDeleted, itemView.listEmpty, onNoteClickListener)
 
         setScroll()
 
@@ -116,7 +118,8 @@ class NotesFragment : Fragment() {
                 context: Context,
                 showOnlyStarred: Boolean,
                 showOnlyDeleted: Boolean,
-                onFABClickListener: View.OnClickListener
+                onFABClickListener: View.OnClickListener,
+                onNoteClickListener: OnNoteClickListener
         ): NotesFragment {
             val fragment = NotesFragment()
 
@@ -127,6 +130,7 @@ class NotesFragment : Fragment() {
             fragment.showOnlyDeleted = showOnlyDeleted
 
             fragment.onFABClickListener = onFABClickListener
+            fragment.onNoteClickListener = onNoteClickListener
 
             return fragment
         }

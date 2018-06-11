@@ -62,6 +62,9 @@
     <string name="list_style">See as A List</string>
     <string name="grid_style">See as A Grid</string>
 
+    <!-- Miscellaneous Strings -->
+    <string name="list_empty">No Content Here</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -6,6 +6,31 @@
     android:layout_height="match_parent"
     tools:context="com.dev.nihitb06.lightningnote.notes.NotesFragment">
 
+    <LinearLayout
+        android:id="@+id/listEmpty"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:src="@drawable/ic_list_empty"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="@dimen/size_image_large"
+            android:layout_height="@dimen/size_image_large"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:text="@string/list_empty"
+            android:textSize="@dimen/size_text_small"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/padding_margin_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNotesList"
         android:layout_width="match_parent"

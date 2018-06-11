@@ -1,8 +1,10 @@
-package com.dev.nihitb06.lightningnote.notes.addnotes
+package com.dev.nihitb06.lightningnote.notes.operations
 
+import android.Manifest
 import android.os.Bundle
 import android.os.Handler
 import android.app.Fragment
+import android.os.Build
 import android.support.design.widget.TextInputEditText
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -10,10 +12,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
+import com.dev.nihitb06.lightningnote.notes.noteutils.AttachmentUriManager
 import com.dev.nihitb06.lightningnote.utils.AnimationUtils
+import com.dev.nihitb06.lightningnote.utils.PermissionManager
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import kotlinx.android.synthetic.main.fragment_add_note.view.*
 
@@ -24,6 +29,8 @@ class AddNoteFragment : Fragment() {
     private lateinit var actions: Array<String>
     private lateinit var icons: Array<Int>
     private lateinit var colors: Array<Int>
+
+    private lateinit var attachmentUriManager: AttachmentUriManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,15 +72,42 @@ class AddNoteFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         itemView = inflater.inflate(R.layout.fragment_add_note, container, false)
 
+        attachmentUriManager = AttachmentUriManager(activity)
+
         Handler().post{
-            for(index in 0..6) {
+            for(i in 0..6) {
                 setBuilders(
                         TextOutsideCircleButton.Builder()
-                                .normalImageRes(icons[index])
-                                .normalText(actions[index])
-                                .normalColor(colors[index])
+                                .normalImageRes(icons[i])
+                                .normalText(actions[i])
+                                .normalColor(colors[i])
                                 .shadowEffect(true)
                                 .rippleEffect(true)
+                                .listener { index: Int ->
+                                    PermissionManager.askForPermission(
+                                            activity,
+                                            if(Build.VERSION.SDK_INT >= 16) {
+                                                arrayOf(
+                                                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                        Manifest.permission.CAMERA
+                                                )
+                                            } else {
+                                                arrayOf(
+                                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                        Manifest.permission.CAMERA
+                                                )
+                                            }, object: PermissionManager.OnPermissionResultListener{
+                                        override fun onGranted() {
+                                            attachmentUriManager.createIntent(index)
+                                        }
+
+                                        override fun onDenied() {
+                                            Toast.makeText(activity, "Permission is Required", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                    )
+                                }
                 )
             }
 
