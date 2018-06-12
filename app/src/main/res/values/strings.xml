@@ -65,6 +65,11 @@
     <!-- Miscellaneous Strings -->
     <string name="list_empty">No Content Here</string>
 
+    <!-- Dialog Strings -->
+    <string name="enter_message">Write a Message for Reminder</string>
+    <string name="priority">Should have High Priority</string>
+    <string name="dismiss">Dismiss</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
