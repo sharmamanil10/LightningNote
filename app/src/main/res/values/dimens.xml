@@ -15,10 +15,12 @@
     <dimen name="size_text_small">12sp</dimen>
 
     <!-- General Image Sizes -->
+    <dimen name="size_image_primary">64dp</dimen>
     <dimen name="size_image_large">48dp</dimen>
     <dimen name="size_image_default">40dp</dimen>
 
     <!-- General Heights of List Items -->
+    <dimen name="height_list_large">88dp</dimen>
     <dimen name="height_list_avatar">56dp</dimen>
     <dimen name="height_list_default">48dp</dimen>
 
@@ -29,4 +31,15 @@
 
     <!-- Sizes of Special Objects -->
     <dimen name="navbar_header_height">160dp</dimen>
+    <dimen name="width_dialog">320dp</dimen>
+    <dimen name="height_dialog">240dp</dimen>
+    <dimen name="height_floating_widget_edit_text">128dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+
+    <dimen name="dot_radius">4dp</dimen>
 </resources>

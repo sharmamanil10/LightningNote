@@ -21,11 +21,6 @@
             android:icon="@drawable/ic_star_black_24dp" />
 
         <item
-            android:id="@+id/tags"
-            android:title="@string/tags"
-            android:icon="@drawable/ic_tag_black_24dp" />
-
-        <item
             android:id="@+id/trash"
             android:title="@string/trash"
             android:icon="@drawable/ic_delete_black_24dp" />

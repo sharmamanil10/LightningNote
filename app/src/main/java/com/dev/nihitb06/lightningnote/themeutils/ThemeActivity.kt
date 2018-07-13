@@ -94,4 +94,6 @@ abstract class ThemeActivity : AppCompatActivity() {
 
         setTheme(appTheme)
     }
+
+    fun isThemeDark(): Boolean = currentTheme == getString(R.string.theme_dark)
 }

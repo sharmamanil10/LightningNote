@@ -13,6 +13,11 @@
         android:icon="@drawable/ic_content_copy_black_24dp" />
 
     <item
+        android:id="@+id/noteReminder"
+        android:title="@string/add_reminder"
+        android:icon="@drawable/ic_reminder_black_24dp" />
+
+    <item
         android:id="@+id/noteDelete"
         android:title="@string/note_delete"
         android:icon="@drawable/ic_delete_black_24dp" />

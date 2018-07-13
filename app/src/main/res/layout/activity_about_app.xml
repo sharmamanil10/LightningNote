@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".aboutapp.AboutAppActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/padding_margin_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/appIcon"
+                android:src="@mipmap/ic_launcher"
+                android:layout_marginBottom="@dimen/padding_margin_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/appName"
+                android:text="@string/app_name"
+                android:textSize="@dimen/size_text_header"
+                android:textColor="?android:textColorPrimary"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/padding_margin_small"
+                android:layout_marginBottom="@dimen/padding_margin_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/appVersion"
+                android:textSize="@dimen/size_text_supporting"
+                android:textColor="?android:textColorSecondary"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/padding_margin_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/dividerOne"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor" />
+
+            <TextView
+                android:id="@+id/appDescription"
+                android:text="@string/app_description"
+                android:textSize="@dimen/size_text_default"
+                android:textColor="?android:textColorSecondary"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/padding_margin_default"
+                android:layout_marginBottom="@dimen/padding_margin_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/openSourceLicenses"
+                android:text="@string/open_source"
+                android:textSize="@dimen/size_text_default"
+                android:textColor="?android:textColorPrimary"
+                android:paddingTop="@dimen/padding_margin_default"
+                android:paddingBottom="@dimen/padding_margin_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.ClickableView" />
+
+            <View
+                android:id="@+id/dividerTwo"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor" />
+
+            <TextView
+                android:id="@+id/assetsUsed"
+                android:text="@string/assets"
+                android:textSize="@dimen/size_text_default"
+                android:textColor="?android:textColorPrimary"
+                android:paddingTop="@dimen/padding_margin_default"
+                android:paddingBottom="@dimen/padding_margin_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.ClickableView" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

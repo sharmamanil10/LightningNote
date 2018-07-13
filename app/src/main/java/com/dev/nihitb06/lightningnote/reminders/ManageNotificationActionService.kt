@@ -28,6 +28,7 @@ class ManageNotificationActionService : Service() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationId = intent?.getIntExtra(NOTIFICATION_ID, -1) ?: -1
+        val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(this)
 
         when (intent?.getStringExtra(ACTION)) {
             NOTIFICATION_CANCEL -> {
@@ -43,7 +44,6 @@ class ManageNotificationActionService : Service() {
                     Log.d("notification", "onStartCommand: NOTIFICATION_UPDATE")
                     val remoteInput = RemoteInput.getResultsFromIntent(intent)
                     remoteInput?.let {
-                        val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(this)
                         Thread {
                             val note = lightningNoteDatabase.noteDao().getNoteById(
                                     intent.getLongExtra(NOTE_ID, -1)

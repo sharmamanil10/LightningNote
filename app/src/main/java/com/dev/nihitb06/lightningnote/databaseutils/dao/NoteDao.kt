@@ -2,7 +2,7 @@ package com.dev.nihitb06.lightningnote.databaseutils.dao
 
 import android.arch.persistence.room.*
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
-import com.dev.nihitb06.lightningnote.databaseutils.extramodels.NoteListDetail
+import com.dev.nihitb06.lightningnote.databaseutils.extramodels.NoteText
 
 @Dao
 interface NoteDao {
@@ -18,9 +18,6 @@ interface NoteDao {
     @Query("SELECT * FROM Notes WHERE id = :noteId")
     fun getNoteById(noteId: Long): Note
 
-    /*@Query("SELECT id, title, body, dateModified FROM Notes")
-    fun getNotesForList(): ArrayList<NoteListDetail>*/
-
     @Query("SELECT * FROM Notes")
     fun getAllNotes(): List<Note>
 
@@ -32,4 +29,22 @@ interface NoteDao {
 
     @Query("SELECT * FROM Notes WHERE isDeleted = 0")
     fun getUnDeletedNotes(): List<Note>
+
+    @Query("SELECT * FROM Notes WHERE isDeleted = 0 ORDER BY dateUpdated DESC")
+    fun getUndeletedNotesLastUpdated(): List<Note>
+
+    @Query("SELECT * FROM Notes WHERE isDeleted = 0 ORDER BY dateCreated DESC")
+    fun getUndeletedNotesNewest(): List<Note>
+
+    @Query("SELECT * FROM Notes WHERE isDeleted = 0 ORDER BY dateCreated ASC")
+    fun getUndeletedNotesOldest(): List<Note>
+
+    @Query("SELECT id, title, body FROM Notes WHERE title LIKE :query OR body LIKE :query")
+    fun search(query: String): List<NoteText>
+
+    @Query("SELECT COUNT(*) FROM notes")
+    fun getCount(): Long
+
+    @Query("SELECT id FROM notes ORDER BY id DESC LIMIT 1")
+    fun getLastId(): Long
 }

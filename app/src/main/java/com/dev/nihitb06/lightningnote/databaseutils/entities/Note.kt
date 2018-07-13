@@ -13,4 +13,9 @@ data class Note (
 
     var isStarred: Boolean = false
     var isDeleted: Boolean = false
+
+    var hasAttachment: Boolean = false
+
+    var dateCreated: Long = System.currentTimeMillis()
+    var dateUpdated: Long = System.currentTimeMillis()
 }

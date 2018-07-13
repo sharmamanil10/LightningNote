@@ -22,15 +22,29 @@ class PermissionManager {
 
             permissionResultListener.add(requestCode, listener)
 
-            ActivityCompat.requestPermissions(context as Activity, permissions, requestCode)
+            if(permissions.isNotEmpty())
+                ActivityCompat.requestPermissions(context as Activity, permissions, requestCode)
+            else
+                listener.onGranted()
         }
 
         fun onRequestPermissionsResult(requestCode: Int, @NotNull permissions: Array<out String>, @NotNull results: IntArray) {
             try {
                 val thisListener = permissionResultListener[requestCode]
 
-                for (index in permissions.indices) {
-                    if (results[index] == PackageManager.PERMISSION_GRANTED)
+                if(permissions.size == 1)
+                    if (results[0] == PackageManager.PERMISSION_GRANTED)
+                        thisListener.onGranted()
+                    else
+                        thisListener.onDenied()
+                else {
+                    var shouldExecute = true
+                    for (index in permissions.indices) {
+                        if (results[index] != PackageManager.PERMISSION_GRANTED)
+                            shouldExecute = false
+                    }
+
+                    if(shouldExecute)
                         thisListener.onGranted()
                     else
                         thisListener.onDenied()

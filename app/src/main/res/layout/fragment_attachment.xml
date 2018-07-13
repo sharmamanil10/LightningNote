@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".attachment.AttachmentFragment">
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/typePhoto"
+        android:scaleType="fitCenter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/typeNonPhoto"
+        android:scaleType="fitCenter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintDimensionRatio="4:3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/typeAction"
+        android:tint="@color/dividerColor"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/size_image_large"
+        android:layout_height="@dimen/size_image_large"
+        tools:ignore="ContentDescription" />
+
+    <VideoView
+        android:id="@+id/videoPlayer"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
+</FrameLayout>

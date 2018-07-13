@@ -2,13 +2,12 @@ package com.dev.nihitb06.lightningnote.notes.operations
 
 import android.os.Bundle
 import android.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
 import com.dev.nihitb06.lightningnote.notes.noteutils.AddShowFunctionality
+import com.dev.nihitb06.lightningnote.themeutils.ThemeActivity
 
 class AddNoteFragment : Fragment() {
 
@@ -22,10 +21,8 @@ class AddNoteFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val itemView = inflater.inflate(R.layout.fragment_add_note, container, false)
 
-        val addShowFunctionality = AddShowFunctionality(activity, itemView)
-        addShowFunctionality.initializeAttachments()
-        addShowFunctionality.setNoteChangeListeners(thisNote, null)
-        addShowFunctionality.setStarred(thisNote)
+        val addShowFunctionality = AddShowFunctionality(activity, itemView, (activity as ThemeActivity).isThemeDark())
+        addShowFunctionality.setupView(thisNote, null)
 
         return itemView
     }
@@ -34,5 +31,9 @@ class AddNoteFragment : Fragment() {
         private var thisNote = Note("", "")
 
         fun returnNote() = thisNote
+        fun setNote(note: Note) {
+            thisNote = note
+        }
+        fun isNoteEmpty(): Boolean = thisNote.title != "" || thisNote.body != "" || thisNote.hasAttachment
     }
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/assetItem"
+    android:padding="@dimen/padding_margin_default"
+    android:layout_width="@dimen/width_dialog"
+    android:layout_height="@dimen/height_list_large"
+    style="@style/AppTheme.ClickableView">
+
+    <ImageView
+        android:id="@+id/rackServerIcon"
+        android:src="@mipmap/ic_launcher_round"
+        android:layout_width="@dimen/size_image_default"
+        android:layout_height="@dimen/size_image_default"
+        android:contentDescription="@string/content_desc_asset" />
+    
+    <TextView
+        android:id="@+id/assetName"
+        android:text="@string/asset_name"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/size_text_small"
+        android:layout_marginLeft="@dimen/padding_margin_default"
+        android:layout_marginStart="@dimen/padding_margin_default"
+        android:layout_marginRight="@dimen/padding_margin_default"
+        android:layout_marginEnd="@dimen/padding_margin_default"
+        android:layout_marginBottom="@dimen/padding_margin_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/rackServerIcon" />
+
+    <TextView
+        android:id="@+id/assetLicense"
+        android:text="@string/asset_license"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="@dimen/size_text_small"
+        android:layout_marginLeft="@dimen/padding_margin_default"
+        android:layout_marginStart="@dimen/padding_margin_default"
+        android:layout_marginRight="@dimen/padding_margin_default"
+        android:layout_marginEnd="@dimen/padding_margin_default"
+        android:layout_marginBottom="@dimen/padding_margin_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/rackServerIcon"
+        app:layout_constraintTop_toBottomOf="@id/assetName" />
+
+    <TextView
+        android:id="@+id/assetModified"
+        android:text="@string/asset_modified"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="@dimen/size_text_small"
+        android:textStyle="italic"
+        android:layout_marginLeft="@dimen/padding_margin_default"
+        android:layout_marginStart="@dimen/padding_margin_default"
+        android:layout_marginRight="@dimen/padding_margin_default"
+        android:layout_marginEnd="@dimen/padding_margin_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/rackServerIcon"
+        app:layout_constraintTop_toBottomOf="@id/assetLicense" />
+
+</android.support.constraint.ConstraintLayout>

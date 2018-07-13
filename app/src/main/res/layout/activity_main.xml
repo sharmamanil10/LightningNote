@@ -31,8 +31,6 @@
             android:layout_height="match_parent"
             android:animateLayoutChanges="true">
 
-
-
         </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>

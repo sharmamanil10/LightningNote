@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="@dimen/padding_margin_default"
+    android:layout_width="@dimen/width_dialog"
+    android:layout_height="@dimen/height_dialog">
+
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        android:text="@string/recording"
+        android:textSize="@dimen/size_text_header"
+        android:textColor="?android:textColorPrimary"
+        android:minEms="15"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/padding_margin_moderate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/btnStopRecording"
+        android:src="@drawable/ic_stop_black_24dp"
+        android:scaleType="fitCenter"
+        android:tint="@color/white"
+        android:background="@drawable/drawable_oval"
+        android:padding="@dimen/padding_margin_small"
+        android:layout_marginBottom="@dimen/padding_margin_default"
+        android:layout_width="@dimen/size_image_primary"
+        android:layout_height="@dimen/size_image_primary"
+        style="@style/AppTheme.ClickableView" />
+
+</LinearLayout>

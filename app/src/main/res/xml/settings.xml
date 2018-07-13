@@ -15,6 +15,36 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/general_functionality">
+
+        <SwitchPreference
+            android:key="@string/key_multi_selection"
+            android:title="@string/multi_selection"
+            android:summaryOn="@string/multi_selection_summary_on"
+            android:summaryOff="@string/multi_selection_summary_off"
+            android:defaultValue="false" />
+
+        <SwitchPreference
+            android:key="@string/key_shake_to_note"
+            android:title="@string/shake_to_note"
+            android:summary="@string/shake_to_note_summary"
+            android:defaultValue="true" />
+
+        <Preference
+            android:key="@string/key_floating_widget"
+            android:title="@string/floating_widget"
+            android:summary="@string/floating_widget_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/search">
+
+        <Preference
+            android:key="@string/key_clear_history"
+            android:title="@string/clear_history" />
+
+    </PreferenceCategory>
+
     <!-- About -->
     <PreferenceCategory android:title="@string/about">
 
@@ -22,6 +52,11 @@
         <Preference
             android:key="@string/key_about_app"
             android:title="@string/about_app" />
+
+        <!-- Re-Watch App Tour -->
+        <Preference
+            android:key="@string/key_app_tour"
+            android:title="@string/app_tour_re_watch" />
 
     </PreferenceCategory>
 

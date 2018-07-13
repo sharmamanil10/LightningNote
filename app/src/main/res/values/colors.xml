@@ -43,5 +43,12 @@
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="semi_transparent">#33000000</color>
     <color name="transparent">#00FFFFFF</color>
+
+    <color name="black_overlay">#66000000</color>
+
+    <color name="color_app_tour_one">#00BCD4</color>
+    <color name="color_app_tour_two">#FFC107</color>
+    <color name="color_app_tour_three">#009688</color>
 </resources>

@@ -6,16 +6,17 @@ import android.content.Intent
 import android.support.design.widget.TextInputEditText
 import android.util.Log
 import android.widget.Button
+import android.widget.Switch
 import com.dev.nihitb06.lightningnote.R
+import com.dev.nihitb06.lightningnote.databaseutils.LightningNoteDatabase
+import com.dev.nihitb06.lightningnote.databaseutils.entities.Reminder
 import java.util.*
 
-class ReminderCreator (private val context: Context, private val noteId: Long) {
+class ReminderCreator (private val context: Context, private val noteIds: Array<Long>) {
 
-    private val calender: Calendar
+    private val calender: Calendar = Calendar.getInstance()
     private var message = ""
-    init {
-        calender = Calendar.getInstance()
-    }
+    private var isHigh = false
 
     fun createReminder() {
         Log.d("Reminder", "createReminder: begins")
@@ -28,6 +29,7 @@ class ReminderCreator (private val context: Context, private val noteId: Long) {
 
                 dialog.findViewById<Button>(R.id.btnAddReminder).setOnClickListener {
                     message = dialog.findViewById<TextInputEditText>(R.id.etReminderMessage).text.toString()
+                    isHigh = dialog.findViewById<Switch>(R.id.prioritySwitch).isActivated
                     setReminder(year, month, dayOfMonth, hourOfDay, minute)
                     dialog.dismiss()
                 }
@@ -40,32 +42,42 @@ class ReminderCreator (private val context: Context, private val noteId: Long) {
 
     private fun setReminder(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
         Log.d("Reminder", "setReminder: setReminder")
-        val alarmIntent = Intent(context, ReminderNotificationService::class.java)
-        alarmIntent.putExtra(NOTE_ID, noteId)
-        alarmIntent.putExtra(MESSAGE, message)
+        Thread {
+            for(noteId in noteIds) {
+                val reminderId = LightningNoteDatabase.getDatabaseInstance(context)
+                        .reminderDao().insertReminder(Reminder(year, month, day, hour, minute, noteId))
+                val alarmIntent = Intent(context, ReminderNotificationService::class.java)
+                alarmIntent.putExtra(NOTE_ID, noteId)
+                alarmIntent.putExtra(REMINDER_ID, reminderId)
+                alarmIntent.putExtra(MESSAGE, message)
+                alarmIntent.putExtra(PRIORITY, isHigh)
 
-        calender.set(Calendar.YEAR, year)
-        calender.set(Calendar.MONTH, month)
-        calender.set(Calendar.DAY_OF_MONTH, day)
-        calender.set(Calendar.HOUR_OF_DAY, hour)
-        calender.set(Calendar.MINUTE, minute)
-        calender.set(Calendar.SECOND, 0)
+                calender.set(Calendar.YEAR, year)
+                calender.set(Calendar.MONTH, month)
+                calender.set(Calendar.DAY_OF_MONTH, day)
+                calender.set(Calendar.HOUR_OF_DAY, hour)
+                calender.set(Calendar.MINUTE, minute)
+                calender.set(Calendar.SECOND, 0)
 
-        (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager)
-                .set(
-                        AlarmManager.RTC_WAKEUP,
-                        calender.timeInMillis,
-                        PendingIntent.getService(
-                                context,
-                                minute+day+hour+month+year,
-                                alarmIntent,
-                                PendingIntent.FLAG_UPDATE_CURRENT
+                (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager)
+                        .set(
+                                AlarmManager.RTC_WAKEUP,
+                                calender.timeInMillis,
+                                PendingIntent.getService(
+                                        context,
+                                        minute+day+hour+month+year+noteId.toInt(),
+                                        alarmIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT
+                                )
                         )
-                )
+            }
+        }.start()
     }
 
     companion object {
         const val NOTE_ID = "NoteId"
+        const val REMINDER_ID = "ReminderId"
         const val MESSAGE = "Reminder Content"
+        const val PRIORITY = "ReminderPriority"
     }
 }

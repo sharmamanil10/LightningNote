@@ -1,15 +1,23 @@
 package com.dev.nihitb06.lightningnote.utils
 
 import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.widget.CardView
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import kotlinx.android.synthetic.main.layout_note.view.*
 
 class AnimationUtils {
 
     companion object {
+        const val ELEVATION_START = 0f
+        const val ELEVATION_END = 24f
+
+        const val ELEVATION_REVERSE_START = 24f
+        const val ELEVATION_REVERSE_END = 6f
+
         fun hamburgerToBackArrow(
                 drawerToggle: MyActionBarDrawerToggle,
                 mainDrawerLayout: DrawerLayout,
@@ -36,8 +44,11 @@ class AnimationUtils {
             anim.start()
         }
 
-        fun scaleAnimate(animatedView: View, scaleX: Float, scaleY: Float = scaleX) {
-            animatedView.animate().scaleX(scaleX).scaleY(scaleY).start()
-        }
+        fun setSelected(view: View, start: Float, end: Float) = ObjectAnimator.ofFloat(
+                view.root as CardView,
+                "cardElevation",
+                start,
+                end
+        ).start()
     }
 }

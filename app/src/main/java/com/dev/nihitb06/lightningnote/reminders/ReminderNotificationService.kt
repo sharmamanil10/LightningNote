@@ -3,122 +3,166 @@ package com.dev.nihitb06.lightningnote.reminders
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.preference.PreferenceManager
+import android.provider.MediaStore
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.RemoteInput
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.dev.nihitb06.lightningnote.MainActivity
+import com.dev.nihitb06.lightningnote.MainActivity.Companion.OPEN_NOTE_ID
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.databaseutils.LightningNoteDatabase
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
 import com.dev.nihitb06.lightningnote.reminders.ReminderCreator.Companion.MESSAGE
 import com.dev.nihitb06.lightningnote.reminders.ReminderCreator.Companion.NOTE_ID
+import com.dev.nihitb06.lightningnote.reminders.ReminderCreator.Companion.PRIORITY
+import com.dev.nihitb06.lightningnote.reminders.ReminderCreator.Companion.REMINDER_ID
 
 class ReminderNotificationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Thread {
             var thisNote: Note? = null
+            val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(this)
 
-            try {
-                thisNote = LightningNoteDatabase.getDatabaseInstance(this).noteDao().getNoteById(intent!!.getLongExtra(NOTE_ID, -1))
-            } catch (e: Exception) {
-                Log.e("Notification", "Message: "+e.message)
-            }
+            Log.d("Notification", "onStartCommand: ")
 
-            thisNote?.let {
-                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                val notificationBuilder = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    notificationManager.createNotificationChannel(
-                            NotificationChannel(CHANNEL_ID, NAME, NotificationManager.IMPORTANCE_DEFAULT)
-                    )
-                    NotificationCompat.Builder(this, CHANNEL_ID)
-                } else {
-                    NotificationCompat.Builder(this)
-                }
+            val reminderId = intent?.getLongExtra(REMINDER_ID, -1) ?: -1
+            if(reminderId != -1L) {
+                if(!lightningNoteDatabase.reminderDao().getReminderById(reminderId).isCancelled) {
+                    try {
+                        thisNote = lightningNoteDatabase.noteDao().getNoteById(intent!!.getLongExtra(NOTE_ID, -1))
+                    } catch (e: Exception) {
+                        Log.e("Notification", "Message: "+e.message)
+                    }
 
-                val color = ContextCompat.getColor(this, getColorPrimary(PreferenceManager
-                        .getDefaultSharedPreferences(this)
-                        .getString(getString(R.string.key_theme), getString(R.string.theme_default))))
+                    Log.d("Notification", "onStartCommand: Not Cancelled")
 
-                notificationBuilder.setSmallIcon(R.mipmap.ic_launcher_foreground)
-                        .setContentTitle(thisNote.title)
-                        .setContentText(intent?.getStringExtra(MESSAGE))
-                        .setContentIntent(PendingIntent.getActivity(
-                                this,
-                                REQUEST_CODE,
-                                Intent(this, MainActivity::class.java),
-                                PendingIntent.FLAG_ONE_SHOT
-                        ))
-                        .setAutoCancel(true)
-                if(thisNote.body != "")
-                    notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(thisNote.body))
+                    val isHigh = intent?.getBooleanExtra(PRIORITY, false) ?: false
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-                    notificationBuilder.addAction(NotificationCompat.Action.Builder(
-                            R.drawable.ic_note_black_24dp,
-                            ACTION_ONE,
-                            PendingIntent.getService(
-                                    this,
-                                    REQUEST_CODE_DISMISS+(count-300),
-                                    Intent(this, ManageNotificationActionService::class.java)
-                                            .putExtra(ACTION, NOTIFICATION_CANCEL)
-                                            .putExtra(NOTIFICATION_ID, count),
-                                    PendingIntent.FLAG_CANCEL_CURRENT
+                    thisNote?.let {
+                        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            notificationManager.createNotificationChannel(
+                                    NotificationChannel(CHANNEL_ID, NAME, if (isHigh) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT)
                             )
-                    ).build()).setColor(color).setGroup(GROUP_KEY)
+                        }
+                        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
 
-                    if(count > 300) {
-                        Thread {
-                            val style = NotificationCompat.InboxStyle()
-                                    .setBigContentTitle(getString(R.string.app_name))
-                                    .setSummaryText(GROUP_SUMMARY_TEXT)
-                            for(index in notificationTexts.indices) {
-                                style.addLine(notificationTexts[index])
+                        val color = ContextCompat.getColor(this, getColorPrimary(PreferenceManager
+                                .getDefaultSharedPreferences(this)
+                                .getString(getString(R.string.key_theme), getString(R.string.theme_default))))
+
+                        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher_foreground)
+                                .setContentTitle(thisNote.title)
+                                .setContentText(intent?.getStringExtra(MESSAGE))
+                                .setContentIntent(PendingIntent.getActivity(
+                                        this,
+                                        REQUEST_CODE,
+                                        Intent(this, MainActivity::class.java)
+                                                .putExtra(OPEN_NOTE_ID, thisNote.id),
+                                        PendingIntent.FLAG_ONE_SHOT
+                                ))
+                                .setPriority(if (isHigh) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true)
+
+                        if(thisNote.hasAttachment) {
+                            Log.d("Notification", "onStartCommand: Has Attachment: true")
+                            val imgUri = lightningNoteDatabase.attachmentDao().getImageForList(thisNote.id)
+
+                            try {
+                                val bmp = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(imgUri))
+                                Log.d("Notification", "onStartCommand: Bmp: "+bmp)
+                                notificationBuilder
+                                        .setLargeIcon(bmp)
+                                        .setStyle(
+                                                NotificationCompat.BigPictureStyle().setSummaryText(thisNote.body)
+                                                .bigPicture(bmp)
+                                        )
+                                Log.d("Notification", "onStartCommand: Bmp: "+bmp+" Set")
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                Log.d("Notification", "onStartCommand: Exception Setting Image")
+                                if(thisNote.body != "")
+                                    notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(thisNote.body))
                             }
-                            val groupNotification = NotificationCompat.Builder(this, CHANNEL_ID)
-                                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                                    .setContentTitle(getString(R.string.app_name))
-                                    .setContentText(GROUP_SUMMARY_TEXT)
-                                    .setStyle(style)
-                                    .setColor(color)
-                                    .setGroup(GROUP_KEY)
-                                    .setGroupSummary(true)
-                                    .setAutoCancel(true)
-                                    .build()
+                        } else if(thisNote.body != "")
+                            notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(thisNote.body))
 
-                            notificationManager.notify(GROUP_SUMMARY_ID, groupNotification)
-                        }.start()
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                            notificationBuilder.addAction(NotificationCompat.Action.Builder(
+                                    R.drawable.ic_note_black_24dp,
+                                    ACTION_ONE,
+                                    PendingIntent.getService(
+                                            this,
+                                            REQUEST_CODE_DISMISS+(count-300),
+                                            Intent(this, ManageNotificationActionService::class.java)
+                                                    .putExtra(ACTION, NOTIFICATION_CANCEL)
+                                                    .putExtra(NOTIFICATION_ID, count)
+                                                    .putExtra(REMINDER_ID, reminderId),
+                                            PendingIntent.FLAG_CANCEL_CURRENT
+                                    )
+                            ).build()).setColor(color).setGroup(GROUP_KEY)
+
+                            Log.d("MultiSelect", "Count: "+count)
+                            if(count > 300) {
+                                Log.d("MultiSelect", "Summary Setting")
+                                val style = NotificationCompat.InboxStyle()
+                                        .setBigContentTitle(getString(R.string.app_name))
+                                        .setSummaryText(GROUP_SUMMARY_TEXT)
+                                for(index in notificationTexts.indices) {
+                                    style.addLine(notificationTexts[index])
+                                }
+                                val groupNotification = NotificationCompat.Builder(this, CHANNEL_ID)
+                                        .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                                        .setContentTitle(getString(R.string.app_name))
+                                        .setContentText(GROUP_SUMMARY_TEXT)
+                                        .setStyle(style)
+                                        .setColor(color)
+                                        .setGroup(GROUP_KEY)
+                                        .setGroupSummary(true)
+                                        .setAutoCancel(true)
+                                        .build()
+
+                                notificationManager.notify(GROUP_SUMMARY_ID, groupNotification)
+                            }
+                        }
+
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            notificationBuilder.addAction(
+                                    NotificationCompat.Action.Builder(
+                                            R.drawable.ic_note_black_24dp,
+                                            ACTION_TWO,
+                                            PendingIntent.getService(
+                                                    this,
+                                                    REQUEST_CODE_UPDATE+(count-300)+1,
+                                                    Intent(this, ManageNotificationActionService::class.java)
+                                                            .putExtra(ACTION, NOTIFICATION_NOTE_UPDATE)
+                                                            .putExtra(NOTIFICATION_ID, count)
+                                                            .putExtra(NOTE_ID, thisNote.id)
+                                                            .putExtra("Color", color)
+                                                            .putExtra(REMINDER_ID, reminderId),
+                                                    PendingIntent.FLAG_UPDATE_CURRENT
+                                            )
+                                    ).addRemoteInput(
+                                            RemoteInput.Builder(UPDATE_NOTE_KEY)
+                                                    .setLabel("Append to Note Body")
+                                                    .build()
+                                    ).build()
+                            )
+                        }
+
+                        notificationManager.notify(count++, notificationBuilder.build())
                     }
                 }
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    notificationBuilder.addAction(
-                            NotificationCompat.Action.Builder(
-                                    R.drawable.ic_note_black_24dp,
-                                    ACTION_TWO,
-                                    PendingIntent.getService(
-                                            this,
-                                            REQUEST_CODE_UPDATE+(count-300)+1,
-                                            Intent(this, ManageNotificationActionService::class.java)
-                                                    .putExtra(ACTION, NOTIFICATION_NOTE_UPDATE)
-                                                    .putExtra(NOTIFICATION_ID, count)
-                                                    .putExtra(NOTE_ID, thisNote.id)
-                                                    .putExtra("Color", color),
-                                            PendingIntent.FLAG_UPDATE_CURRENT
-                                    )
-                            ).addRemoteInput(
-                                    RemoteInput.Builder(UPDATE_NOTE_KEY)
-                                            .setLabel("Append to Note Body")
-                                            .build()
-                            ).build()
-                    )
-                }
-
-                notificationManager.notify(count++, notificationBuilder.build())
+                lightningNoteDatabase.reminderDao().deleteReminder(
+                        lightningNoteDatabase.reminderDao().getReminderById(reminderId)
+                )
             }
         }.start()
 
@@ -156,7 +200,7 @@ class ReminderNotificationService : Service() {
         private const val GROUP_KEY = "LightningNotesGroup"
         private const val GROUP_SUMMARY_ID = 0
         private const val GROUP_SUMMARY_TEXT = "You have the following reminders"
-        var count = 300
+        @Volatile var count = 300
 
         const val NOTIFICATION_ID = "NotificationId"
         const val ACTION = "Action"

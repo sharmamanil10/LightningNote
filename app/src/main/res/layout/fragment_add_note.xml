@@ -26,6 +26,7 @@
             android:id="@+id/noteTitle"
             android:hint="@string/note_title"
             android:textSize="@dimen/size_text_default"
+            android:textColor="?android:textColorPrimary"
             android:layout_marginTop="@dimen/padding_margin_small"
             android:layout_marginLeft="@dimen/padding_margin_default"
             android:layout_marginStart="@dimen/padding_margin_default"
@@ -35,10 +36,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvAttachmentsList"
+            android:layout_marginTop="@dimen/padding_margin_xs"
+            android:layout_marginLeft="@dimen/padding_margin_default"
+            android:layout_marginStart="@dimen/padding_margin_default"
+            android:layout_marginRight="@dimen/padding_margin_default"
+            android:layout_marginEnd="@dimen/padding_margin_default"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:visibility="gone" />
+
         <android.support.design.widget.TextInputEditText
             android:id="@+id/noteBody"
             android:hint="@string/note_body"
             android:textSize="@dimen/size_text_default"
+            android:textColor="?android:textColorSecondary"
             android:inputType="textMultiLine"
             android:gravity="top"
             android:layout_marginTop="@dimen/padding_margin_xs"
@@ -60,31 +74,11 @@
             android:layout_marginRight="@dimen/padding_margin_default"
             android:layout_marginEnd="@dimen/padding_margin_default"
             android:layout_marginBottom="@dimen/padding_margin_small"
-            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1.5"
-            style="@style/AppTheme.ColoredButton" />
-
-        <TextView
-            android:text="@string/tags"
-            android:textSize="@dimen/size_text_small"
-            android:layout_marginTop="@dimen/padding_margin_small"
-            android:layout_marginLeft="@dimen/padding_margin_default"
-            android:layout_marginStart="@dimen/padding_margin_default"
-            android:layout_marginRight="@dimen/padding_margin_default"
-            android:layout_marginEnd="@dimen/padding_margin_default"
-            android:layout_marginBottom="@dimen/padding_margin_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginLeft="@dimen/padding_margin_default"
-            android:layout_marginStart="@dimen/padding_margin_default"
-            android:layout_marginRight="@dimen/padding_margin_default"
-            android:layout_marginEnd="@dimen/padding_margin_default"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2" />
+            style="@style/AppTheme.FlatButton" />
 
     </LinearLayout>
 

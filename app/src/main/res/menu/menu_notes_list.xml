@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search_white_24dp"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView" />
+
+    <item
+        android:id="@+id/sort"
+        android:title="@string/sort_list"
+        android:icon="@drawable/ic_sort_white_24dp"
+        app:showAsAction="ifRoom">
+
+        <menu>
+
+            <group
+                android:id="@+id/sortGroup"
+                android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/sortUpdated"
+                    android:title="@string/sort_updated" />
+
+                <item
+                    android:id="@+id/sortNewest"
+                    android:title="@string/sort_newest" />
+
+                <item
+                    android:id="@+id/sortOldest"
+                    android:title="@string/sort_oldest" />
+
+            </group>
+
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/list_style"
+        android:title="@string/list_style"
+        android:icon="@drawable/ic_view_list_black_24dp"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/grid_style"
+        android:title="@string/grid_style"
+        android:icon="@drawable/ic_view_grid_black_24dp"
+        android:visible="false" />
+
+</menu>

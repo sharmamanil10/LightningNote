@@ -4,18 +4,25 @@ package com.dev.nihitb06.lightningnote.notes.operations
 import android.os.Bundle
 import android.app.Fragment
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.databaseutils.LightningNoteDatabase
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
 import com.dev.nihitb06.lightningnote.notes.noteutils.AddShowFunctionality
+import com.dev.nihitb06.lightningnote.notes.noteutils.NoteLongClickListenerSingleSelection
+import com.dev.nihitb06.lightningnote.themeutils.ThemeActivity
 import kotlinx.android.synthetic.main.fragment_add_note.view.*
 
 class ShowNoteFragment : Fragment() {
 
     private var noteId: Long? = null
+    private var noteLongClickListenerSingleSelection: NoteLongClickListenerSingleSelection? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -24,12 +31,32 @@ class ShowNoteFragment : Fragment() {
         itemView.noteTitle.setText(thisNote.title)
         itemView.noteBody.setText(thisNote.body)
 
-        val addShowFunctionality = AddShowFunctionality(activity, itemView)
-        addShowFunctionality.initializeAttachments()
-        addShowFunctionality.setNoteChangeListeners(thisNote, oldNote)
-        addShowFunctionality.setStarred(thisNote)
+        val addShowFunctionality = AddShowFunctionality(activity, itemView, (activity as ThemeActivity).isThemeDark())
+        addShowFunctionality.setupView(thisNote, oldNote)
 
         return itemView
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        noteLongClickListenerSingleSelection = NoteLongClickListenerSingleSelection(
+                activity,
+                thisNote,
+                activity.findViewById(R.id.fragmentContainer),
+                ArrayList(),
+                false
+        ) { activity.recreate() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater?.inflate(R.menu.menu_note, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return noteLongClickListenerSingleSelection?.processMenuItem(item) ?: false
     }
 
     companion object {
@@ -39,7 +66,7 @@ class ShowNoteFragment : Fragment() {
 
             Thread {
                 thisNote = LightningNoteDatabase.getDatabaseInstance(context).noteDao().getNoteById(noteId!!)
-                oldNote = thisNote
+                oldNote = thisNote.copy()
             }.start()
 
             return fragment
@@ -50,7 +77,7 @@ class ShowNoteFragment : Fragment() {
 
         fun returnNote() = thisNote
         fun isNoteChanged(): Boolean {
-            return !(thisNote.title != oldNote.title || thisNote.body != oldNote.body || thisNote.isStarred != oldNote.isStarred)
+            return (thisNote.title != oldNote.title || thisNote.body != oldNote.body || thisNote.isStarred != oldNote.isStarred)
         }
     }
 }

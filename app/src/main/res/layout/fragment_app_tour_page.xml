@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".apptour.AppTourPageFragment">
+
+    <FrameLayout
+        android:id="@+id/pageIllustrations"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7">
+
+        <ImageView
+            android:id="@+id/ivBackground"
+            android:src="@drawable/ic_shake"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            android:padding="@dimen/padding_margin_default"
+            android:layout_margin="@dimen/padding_margin_moderate"
+            android:layout_width="292dp"
+            android:layout_height="292dp"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivIllustration"
+            android:src="@drawable/phone"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/padding_margin_default"
+            android:paddingStart="@dimen/padding_margin_default"
+            android:paddingRight="@dimen/padding_margin_xs"
+            android:paddingEnd="@dimen/padding_margin_xs"
+            android:layout_margin="@dimen/padding_margin_default"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivHelperOne"
+            android:src="@drawable/new_splash"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/padding_margin_default"
+            android:layout_width="@dimen/size_image_primary"
+            android:layout_height="@dimen/size_image_primary"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivHelperTwo"
+            android:src="@mipmap/ic_launcher_round"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/padding_margin_default"
+            android:layout_marginStart="@dimen/padding_margin_default"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvPageTitle"
+        android:textColor="?android:textColorPrimaryInverse"
+        android:textSize="@dimen/size_text_header"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="@dimen/padding_margin_default"
+        android:layout_marginLeft="@dimen/padding_margin_default"
+        android:layout_marginStart="@dimen/padding_margin_default"
+        android:layout_marginRight="@dimen/padding_margin_default"
+        android:layout_marginEnd="@dimen/padding_margin_default"
+        android:layout_marginBottom="@dimen/padding_margin_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvPageSubtitle"
+        android:textColor="?android:textColorSecondaryInverse"
+        android:textSize="@dimen/size_text_supporting"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/padding_margin_default"
+        android:layout_marginStart="@dimen/padding_margin_default"
+        android:layout_marginRight="@dimen/padding_margin_default"
+        android:layout_marginEnd="@dimen/padding_margin_default"
+        android:layout_marginBottom="@dimen/padding_margin_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

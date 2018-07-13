@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/removeFloatingWidget"
+        android:src="@drawable/ic_delete_white_24dp"
+        android:background="@drawable/drawable_oval"
+        android:padding="@dimen/padding_margin_small"
+        android:layout_width="@dimen/size_image_large"
+        android:layout_height="@dimen/size_image_large"
+        tools:ignore="ContentDescription" />
+
+</android.support.constraint.ConstraintLayout>

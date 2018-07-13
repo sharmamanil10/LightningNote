@@ -6,47 +6,36 @@
     android:layout_height="match_parent"
     tools:context="com.dev.nihitb06.lightningnote.notes.NotesFragment">
 
-    <LinearLayout
+    <include layout="@layout/layout_empty_list"
         android:id="@+id/listEmpty"
-        android:orientation="vertical"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-        <ImageView
-            android:src="@drawable/ic_list_empty"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="@dimen/size_image_large"
-            android:layout_height="@dimen/size_image_large"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:text="@string/list_empty"
-            android:textSize="@dimen/size_text_small"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/padding_margin_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNotesList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddNotes"
         android:src="@drawable/ic_add_black_24dp"
         android:tint="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        app:rippleColor="@color/white"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/padding_margin_default"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_behavior="com.dev.nihitb06.lightningnote.utils.FloatingActionButtonHideOnScrollBehaviour"
-        android:clickable="true"
-        android:focusable="true"
-        app:rippleColor="@color/white" />
+        android:visibility="gone" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,24 +1,30 @@
 package com.dev.nihitb06.lightningnote.notes.noteutils
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Build
-import android.os.Handler
 import android.support.design.widget.TextInputEditText
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.ImageViewCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.dev.nihitb06.lightningnote.R
+import com.dev.nihitb06.lightningnote.databaseutils.LightningNoteDatabase
 import com.dev.nihitb06.lightningnote.databaseutils.entities.Note
+import com.dev.nihitb06.lightningnote.notes.AttachmentRecyclerAdapter
 import com.dev.nihitb06.lightningnote.reminders.ReminderCreator
+import com.dev.nihitb06.lightningnote.utils.AttachmentUriManager
 import com.dev.nihitb06.lightningnote.utils.PermissionManager
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import kotlinx.android.synthetic.main.fragment_add_note.view.*
 
-class AddShowFunctionality (private val context: Context, private val itemView: View) {
+class AddShowFunctionality (private val context: Context, private val itemView: View, private val isThemeDark: Boolean) {
 
     private val actions = arrayOf(
             "Click Photo",
@@ -31,13 +37,13 @@ class AddShowFunctionality (private val context: Context, private val itemView: 
     )
 
     private val icons = arrayOf(
-            R.drawable.ic_photo_camera_black_24dp,
-            R.drawable.ic_videocam_black_24dp,
-            R.drawable.ic_keyboard_voice_black_24dp,
-            R.drawable.ic_photo_black_24dp,
-            R.drawable.ic_local_movies_black_24dp,
-            R.drawable.ic_audiotrack_black_24dp,
-            R.drawable.ic_place_black_24dp
+            R.drawable.ic_photo_camera_white_24dp,
+            R.drawable.ic_videocam_white_24dp,
+            R.drawable.ic_keyboard_voice_white_24dp,
+            R.drawable.ic_photo_white_24dp,
+            R.drawable.ic_local_movies_white_24dp,
+            R.drawable.ic_audiotrack_white_24dp,
+            R.drawable.ic_place_white_24dp
     )
 
     private val colors = arrayOf(
@@ -50,51 +56,89 @@ class AddShowFunctionality (private val context: Context, private val itemView: 
             ContextCompat.getColor(context, R.color.colorRedAccent)
     )
 
-    private val attachmentUriManager = AttachmentUriManager(context)
-
-    fun initializeAttachments() {
-        Handler().post {
-            for (i in 0..6) {
-                itemView.attachmentButton.addBuilder(
-                        TextOutsideCircleButton.Builder()
-                                .normalImageRes(icons[i])
-                                .normalText(actions[i])
-                                .normalColor(colors[i])
-                                .shadowEffect(true)
-                                .rippleEffect(true)
-                                .listener { index: Int ->
-                                    PermissionManager.askForPermission(
-                                            context,
-                                            if (Build.VERSION.SDK_INT >= 16) {
-                                                arrayOf(
-                                                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                        Manifest.permission.CAMERA
-                                                )
-                                            } else {
-                                                arrayOf(
-                                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                        Manifest.permission.CAMERA
-                                                )
-                                            }, object : PermissionManager.OnPermissionResultListener {
-                                        override fun onGranted() {
-                                            attachmentUriManager.createIntent(index)
-                                        }
-
-                                        override fun onDenied() {
-                                            Toast.makeText(context, "Permission is Required", Toast.LENGTH_LONG).show()
-                                        }
-                                    }
-                                    )
-                                }
+    private val permissionLists = arrayOf(
+            arrayOf(
+                    Manifest.permission.CAMERA
+            ),
+            arrayOf(
+                    Manifest.permission.RECORD_AUDIO
+            ),
+            if (Build.VERSION.SDK_INT >= 16) {
+                arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
-            }
+            } else {
+                arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            },
+            arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            )
+    )
 
-            itemView.attachmentButton.visibility = View.VISIBLE
-        }
+    fun setupView(thisNote: Note, oldNote: Note?) {
+        Thread {
+            val id = LightningNoteDatabase.getDatabaseInstance(context).noteDao().getLastId()+1
+            (context as Activity).runOnUiThread { setAttachmentAdapter(oldNote?.run { thisNote.id } ?: id, thisNote.hasAttachment) }
+            initializeAttachments(oldNote?.run { thisNote.id } ?: id, oldNote?.run { false } ?: true)
+        }.start()
+        setNoteChangeListeners(thisNote, oldNote)
+        setStarred(thisNote)
     }
 
-    fun setNoteChangeListeners(thisNote: Note, oldNote: Note?) {
+    private fun setAttachmentAdapter(noteId: Long, hasAttachment: Boolean) {
+        itemView.rvAttachmentsList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        itemView.rvAttachmentsList.adapter = AttachmentRecyclerAdapter(context, noteId, hasAttachment, itemView.rvAttachmentsList)
+    }
+
+    private fun initializeAttachments(noteId: Long, isNoteBeingAdded: Boolean) {
+        val attachmentUriManager = AttachmentUriManager(context, noteId)
+
+        for (i in 0..6) {
+            itemView.attachmentButton.addBuilder(
+                    TextOutsideCircleButton.Builder()
+                            .normalImageRes(icons[i])
+                            .normalText(actions[i])
+                            .normalColor(colors[i])
+                            .shadowEffect(true)
+                            .rippleEffect(true)
+                            .listener { index: Int ->
+                                PermissionManager.askForPermission(
+                                        context,
+                                        when(i) {
+                                            0, 1 -> permissionLists[0]
+
+                                            2 -> permissionLists[1]
+
+                                            3, 4, 5 -> permissionLists[2]
+
+                                            6 -> permissionLists[3]
+
+                                            else -> arrayOf()
+                                        }, object : PermissionManager.OnPermissionResultListener {
+                                    override fun onGranted() {
+                                        attachmentUriManager.createIntent(index, itemView.rvAttachmentsList.adapter as AttachmentRecyclerAdapter, isNoteBeingAdded)
+                                    }
+
+                                    override fun onDenied() {
+                                        Toast.makeText(context, "Permission is Required", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                                )
+                            }
+            )
+        }
+
+        itemView.attachmentButton.visibility = View.VISIBLE
+    }
+
+    private fun setNoteChangeListeners(thisNote: Note, oldNote: Note?) {
+        if(isThemeDark)
+            ImageViewCompat.setImageTintList(itemView.starred, ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)))
+
         (itemView.noteTitle as TextInputEditText).addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if(((oldNote != null) && (s?.toString() != oldNote.title)) || oldNote == null)
@@ -131,12 +175,12 @@ class AddShowFunctionality (private val context: Context, private val itemView: 
             setStarred(thisNote)
         }
 
-        val reminderCreator = ReminderCreator(context, thisNote.id)
+        val reminderCreator = ReminderCreator(context, arrayOf(thisNote.id))
         itemView.btnAddReminder.setOnClickListener { Log.d("Reminder", "onClick: ")
             reminderCreator.createReminder() }
     }
 
-    fun setStarred(thisNote: Note) {
+    private fun setStarred(thisNote: Note) {
         itemView.starred.setImageResource(
                 if(thisNote.isStarred)
                     R.drawable.ic_star_black_24dp

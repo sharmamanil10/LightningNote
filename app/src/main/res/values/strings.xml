@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Lightning Note</string>
 
+    <!-- App Tour Strings -->
+    <string name="btn_skip">Skip</string>
+
+    <string name="page_one_title">Presenting Lightning Note!</string>
+    <string name="page_one_summary">A Lightweight Solution for your note making pleasure</string>
+
+    <string name="page_two_title">Note with Ease and Style</string>
+    <string name="page_two_summary">No more hunting through your app drawer!
+        Just shake your phone twice to open the app, or use our floating helper window</string>
+
+    <string name="page_three_title">Notes are not just Vanilla Text anymore</string>
+    <string name="page_three_summary">Annotate your notes with Images, Audio, Videos and More!</string>
+
     <!-- Drawer Toggle Strings -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -16,16 +29,30 @@
     <!-- SharedPreferences Categories -->
     <string name="theme_appearance">Themes and Appearance</string>
     <string name="about">About</string>
+    <string name="general_functionality">General Functions</string>
 
     <!-- SharedPreferences Keys -->
     <string name="key_theme">selectTheme</string>
     <string name="key_about_app">aboutApp</string>
+    <string name="key_clear_history">clearHistory</string>
+    <string name="key_multi_selection">multiSelection</string>
+    <string name="key_shake_to_note">shakeToNote</string>
+    <string name="key_floating_widget">floatingWidget</string>
+    <string name="key_app_tour">appTour</string>
 
     <!-- SharedPreferences Names and Summaries -->
     <string name="theme">Theme</string>
     <string name="theme_summary">Change the Theme of the App</string>
-
     <string name="about_app">About App</string>
+    <string name="clear_history">Clear History</string>
+    <string name="multi_selection">Multi-Selection Mode</string>
+    <string name="multi_selection_summary_off">Only a Single note can be selected at a time</string>
+    <string name="multi_selection_summary_on">Multiple Notes may be selected at a time</string>
+    <string name="shake_to_note">Shake To Note Service</string>
+    <string name="shake_to_note_summary">Shake Device Twice to Add a Note</string>
+    <string name="floating_widget">Create Floating Note Helper</string>
+    <string name="floating_widget_summary">Creates a Floating Widget to Aid Note Addition</string>
+    <string name="app_tour_re_watch">Re-Watch App Tour</string>
 
     <!-- Strings for Implementing Dynamic Theme in App -->
     <string name="theme_default">Default</string>
@@ -57,19 +84,58 @@
     <string name="note_share">Share</string>
     <string name="note_delete">Delete</string>
     <string name="text_copied">Text Copied to Clipboard</string>
+    <string name="note_restore">Restore</string>
 
+    <!-- Notes List Strings -->
+    <string name="search">Search</string>
+    <string name="sort_list">Sort List By</string>
+    <string name="sort_updated">Last Updated</string>
+    <string name="sort_newest">Newest</string>
+    <string name="sort_oldest">Oldest</string>
     <!-- List Style Strings -->
+    <string name="more_options">More Options</string>
     <string name="list_style">See as A List</string>
     <string name="grid_style">See as A Grid</string>
 
     <!-- Miscellaneous Strings -->
     <string name="list_empty">No Content Here</string>
+    <string name="notification_content">Shake Twice to Add a Note</string>
+    <string name="save">Save Note</string>
+    <string name="save_select">Save as LightningNote</string>
+    <string name="remove">Remove</string>
 
     <!-- Dialog Strings -->
     <string name="enter_message">Write a Message for Reminder</string>
     <string name="priority">Should have High Priority</string>
     <string name="dismiss">Dismiss</string>
+    <string name="recording">Recording Audio</string>
+    <string name="counter">%1$d%2$d:%3$d%4$d</string>
+
+    <!-- Reminder Strings -->
+    <string name="time">%1$d:%2$d</string>
+    <string name="date">%1$d/%2$d/%3$d</string>
+    <string name="am">am</string>
+    <string name="pm">pm</string>
+
+    <!-- Search Strings -->
+    <string name="search_hint">Search For</string>
+
+    <!-- About App String -->
+    <string name="version_placeholder">Version: %1$s</string>
+    <string name="app_description">This is an app description to be updated as seen fit later</string>
+    <string name="open_source">Open Source Licenses</string>
+    <string name="assets">Image Assets Used</string>
+
+    <!-- Image Assets Used -->
+    <string name="asset_name">Rack, Server, Lightning Icon</string>
+    <string name="asset_license">License:  CC Attribution 3.0 UnPorted</string>
+    <string name="asset_link">https://icon-icons.com/icon/rack-server-lightning/52828</string>
+    <string name="asset_modified">Modified from Original</string>
+    <string name="content_desc_asset">Rack, Server and Lightning Icon used as App Icon after Modification</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 </resources>

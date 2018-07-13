@@ -5,6 +5,15 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +34,8 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboard|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
@@ -36,6 +47,93 @@
             android:name=".reminders.ManageNotificationActionService"
             android:enabled="true"
             android:exported="false" />
+
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".search.SearchActivity" />
+
+        <activity
+            android:name=".search.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <provider
+            android:name=".search.RecentSuggestionProvider"
+            android:authorities="com.dev.nihitb06.lightningnote.search.RecentSuggestionProvider"
+            android:exported="false" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.dev.nihitb06.lightningnote.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".attachment.AttachmentDetailsActivity"
+            android:theme="@style/AppTheme.Black" />
+
+        <service
+            android:name=".services.ShakeToNoteService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".services.FloatingWidgetService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity
+            android:name=".services.SelectToNoteActivity"
+            android:label="@string/save_select">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".widget.ViewNoteWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/view_note_widget_info" />
+        </receiver>
+
+        <activity android:name=".widget.ViewNoteWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".aboutapp.AboutAppActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="com.dev.nihitb06.lightningnote"
+                    android:scheme="content" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".apptour.AppTourActivity"
+            android:theme="@style/AppTheme.Fullscreen" />
     </application>
 
 </manifest>

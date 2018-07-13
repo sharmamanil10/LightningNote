@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Collapsed View -->
+    <ImageView
+        android:id="@+id/collapsedView"
+        android:src="@mipmap/ic_launcher_round"
+        android:layout_width="@dimen/size_image_primary"
+        android:layout_height="@dimen/size_image_primary"
+        tools:ignore="ContentDescription" />
+
+    <!-- Expanded View -->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/expandedView"
+        android:padding="@dimen/padding_margin_small"
+        android:background="@android:color/background_light"
+        android:layout_width="@dimen/width_dialog"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_width="@dimen/size_image_primary"
+            android:layout_height="@dimen/size_image_primary"
+            tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/etNoteText"
+            android:hint="@string/note_body"
+            android:inputType="text"
+            android:imeOptions="actionGo"
+            android:gravity="top"
+            android:minEms="16"
+            android:layout_margin="@dimen/padding_margin_small"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_floating_widget_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:text="@string/save"
+            android:drawableLeft="@drawable/ic_save_white_24dp"
+            android:drawableStart="@drawable/ic_save_white_24dp"
+            android:layout_marginRight="@dimen/padding_margin_small"
+            android:layout_marginEnd="@dimen/padding_margin_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etNoteText"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/AppTheme.ColoredButton" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
