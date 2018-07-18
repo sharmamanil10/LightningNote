@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.ImageViewCompat
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.*
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.attachment.AttachmentDetailsActivity
@@ -64,8 +63,8 @@ class NotesRecyclerAdapter (
 
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             val selected = multiSelectionModeHelper.getSelected()
-            val firstPosition = multiSelectionModeHelper.getCheckedItemFirstPosition()
-            val lastPosition = multiSelectionModeHelper.getCheckedItemLastPosition()
+            val firstPosition = try { multiSelectionModeHelper.getCheckedItemFirstPosition() } catch (e: IndexOutOfBoundsException) { 0 }
+            val lastPosition = try { multiSelectionModeHelper.getCheckedItemLastPosition() } catch (e: IndexOutOfBoundsException) { itemCount - 1 }
             when(item?.itemId) {
                 R.id.noteReminder -> {
                     if(multiSelectionModeHelper.getCheckedItemCount() > 0) {
@@ -94,7 +93,7 @@ class NotesRecyclerAdapter (
 
                                     (notes as ArrayList).remove(note)
                                 } catch (e: IndexOutOfBoundsException) {
-                                    Log.e("MultiSelect", "Message: "+e.message)
+                                    e.printStackTrace()
                                 }
                             }
                             updateList(firstPosition, lastPosition)
@@ -117,10 +116,16 @@ class NotesRecyclerAdapter (
                                         lightningNoteDatabase.noteDao().deleteNote(note)
 
                                         for(uri in attachmentUris) {
-                                            val file = File(Uri.parse(uri).path)
+                                            try {
+                                                val file = File(Uri.parse(uri).path)
 
-                                            if(file.exists())
-                                                file.delete()
+                                                if(file.exists())
+                                                    file.delete()
+                                            } catch (e: NullPointerException) {
+                                                e.printStackTrace()
+                                            } catch (e: IOException) {
+                                                e.printStackTrace()
+                                            }
                                         }
                                     } else {
                                         note.isDeleted = true
@@ -133,7 +138,7 @@ class NotesRecyclerAdapter (
                                         setEmptyPlaceholder()
                                     }
                                 } catch (e: IndexOutOfBoundsException) {
-                                    Log.e("Multi", "Message: "+e.message)
+                                    e.printStackTrace()
                                 }
                             }
                             updateList(firstPosition, lastPosition)
@@ -221,10 +226,8 @@ class NotesRecyclerAdapter (
 
             thisView.contentArea.setOnLongClickListener {
                 if(isMultipleSelectionEnabled) {
-                    Log.d("DEBUG", "multiSelectionEnabled")
                     if(noteActionMode != null)
                         return@setOnLongClickListener false
-                    Log.d("DEBUG", "multiSelectionEnabled")
                     noteActionMode = (context as Activity).startActionMode(noteActionModeCallback)
                     setSelected(position)
                     return@setOnLongClickListener true
@@ -335,7 +338,6 @@ class NotesRecyclerAdapter (
         }
 
         private fun setSelected(position: Int) {
-            Log.d("DEBUG", "multiSelectionEnabled")
             multiSelectionModeHelper.setItemChecked(thisView, position)
         }
         private fun toggleSelected(position: Int) {

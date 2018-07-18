@@ -8,7 +8,6 @@ import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
-import android.util.Log
 import com.dev.nihitb06.lightningnote.MainActivity
 import com.dev.nihitb06.lightningnote.MainActivity.Companion.ADD_NOTE_BOOLEAN
 import com.dev.nihitb06.lightningnote.R
@@ -31,9 +30,7 @@ class ShakeToNoteService : Service() {
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         shakeListener = ShakeListener(object: ShakeListener.OnShakeListener {
             override fun onShake(count: Int) {
-                Log.d("ServiceShake", "Count: "+count)
                 if(count >= 2) {
-                    Log.d("ServiceShake", "count is sufficient")
                     openActivityForNoteAddition()
                 }
             }

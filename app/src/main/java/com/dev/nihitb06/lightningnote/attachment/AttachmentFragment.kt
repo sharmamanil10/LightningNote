@@ -10,7 +10,6 @@ import android.provider.MediaStore
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -157,24 +156,19 @@ class AttachmentFragment : Fragment() {
             val file = File(Uri.parse(uri).path)
             if(file.exists()) {
                 file.setReadable(true)
-                Log.d("Audio", "File Readable")
                 mediaPlayer = MediaPlayer.create(context, FileProvider.getUriForFile(context!!, "com.dev.nihitb06.lightningnote.FileProvider", file))
-                Log.d("Audio", "Data Set")
             } else {
                 showErrorSnackBar()
             }
 
             mediaPlayer?.setOnCompletionListener { stopAudioPlayback() }
-            Log.d("Audio", "OnCompletionListener: ")
         } catch (e: IOException) {
-            Log.d("Attach", "Message: "+e.message)
             e.printStackTrace()
         } catch (e: NullPointerException) {
             showErrorToast()
         }
 
         if(audioPlaybackTime > 0) {
-            Log.d("Audio", "Seeking")
             mediaPlayer?.seekTo(audioPlaybackTime)
         }
 
@@ -214,7 +208,6 @@ class AttachmentFragment : Fragment() {
         }
     }
     private fun pauseVideoPlayback() {
-        Log.d("Video", "onPause: ")
         if(itemView?.videoPlayer?.isPlaying == true && isVideoPlaybackActive) {
             itemView?.videoPlayer?.pause()
             itemView?.videoPlayer?.visibility = View.INVISIBLE

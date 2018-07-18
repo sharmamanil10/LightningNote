@@ -49,11 +49,20 @@ class AudioUtils {
 
                 Thread {
                     val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(context)
-                    if(isNoteBeingAdded) (context as MainActivity).saveNote(AddNoteFragment.returnNote(), false).let {
-                        lightningNoteDatabase.attachmentDao().createAttachment(
-                                Attachment(Uri.fromFile(File(audioFilePath)).toString(), noteId, Attachment.AUDIO)
-                        )
-                    }.let { (context as Activity).runOnUiThread { adapter?.notifyAttachments(true) } }
+                    var id = noteId
+                    if(isNoteBeingAdded && !MainActivity.getReturningFromAttachment()) {
+                        id = lightningNoteDatabase.noteDao().insertNote(AddNoteFragment.returnNote())
+                        AddNoteFragment.setNote(lightningNoteDatabase.noteDao().getNoteById(id))
+                        MainActivity.setReturningFromAttachment(true)
+                    }
+
+                    lightningNoteDatabase.attachmentDao().createAttachment(
+                            Attachment(Uri.fromFile(File(audioFilePath)).toString(), id, Attachment.AUDIO)
+                    )
+                    (context as Activity).runOnUiThread {
+                        (context as MainActivity).updateNote()
+                        adapter?.notifyAttachments(true)
+                    }
                 }.start()
             }
 

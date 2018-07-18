@@ -11,7 +11,6 @@ import android.support.v4.widget.ImageViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.dev.nihitb06.lightningnote.R
@@ -81,7 +80,7 @@ class AddShowFunctionality (private val context: Context, private val itemView: 
 
     fun setupView(thisNote: Note, oldNote: Note?) {
         Thread {
-            val id = LightningNoteDatabase.getDatabaseInstance(context).noteDao().getLastId()+1
+            val id = if(thisNote.id == 0L) LightningNoteDatabase.getDatabaseInstance(context).noteDao().getLastId()+1 else thisNote.id
             (context as Activity).runOnUiThread { setAttachmentAdapter(oldNote?.run { thisNote.id } ?: id, thisNote.hasAttachment) }
             initializeAttachments(oldNote?.run { thisNote.id } ?: id, oldNote?.run { false } ?: true)
         }.start()
@@ -176,8 +175,7 @@ class AddShowFunctionality (private val context: Context, private val itemView: 
         }
 
         val reminderCreator = ReminderCreator(context, arrayOf(thisNote.id))
-        itemView.btnAddReminder.setOnClickListener { Log.d("Reminder", "onClick: ")
-            reminderCreator.createReminder() }
+        itemView.btnAddReminder.setOnClickListener { reminderCreator.createReminder() }
     }
 
     private fun setStarred(thisNote: Note) {

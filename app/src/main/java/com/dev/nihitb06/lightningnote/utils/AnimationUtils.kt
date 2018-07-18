@@ -15,9 +15,6 @@ class AnimationUtils {
         const val ELEVATION_START = 0f
         const val ELEVATION_END = 24f
 
-        const val ELEVATION_REVERSE_START = 24f
-        const val ELEVATION_REVERSE_END = 6f
-
         fun hamburgerToBackArrow(
                 drawerToggle: MyActionBarDrawerToggle,
                 mainDrawerLayout: DrawerLayout,

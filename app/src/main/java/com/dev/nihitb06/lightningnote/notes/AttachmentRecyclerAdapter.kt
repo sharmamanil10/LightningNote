@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -38,27 +37,30 @@ class AttachmentRecyclerAdapter (
     private var uris: Array<AttachmentParcelable>? = null
     init {
         if(hasAttachment) {
-            getAttachments()
+            getAttachments(false)
         }
     }
 
-    private fun getAttachments() {
+    private fun getAttachments(shouldTryAgain: Boolean) {
         Thread {
             attachments = LightningNoteDatabase.getDatabaseInstance(context).attachmentDao().getNoteAttachments(noteId)
 
             if(attachments?.size != 0) {
                 uris = Array(attachments?.size ?: 0) { AttachmentParcelable(attachments?.get(it)?.uri, attachments!![it].type) }
-                Log.d("DEBUG_ADD", "AttachmentSize: "+attachments?.size)
                 (context as Activity).runOnUiThread {
                     notifyDataSetChanged()
                     setListVisible()
                 }
+            } else if(shouldTryAgain) {
+                val start = System.currentTimeMillis()
+                while (System.currentTimeMillis() < start+500);
+                getAttachments(false)
             }
         }.start()
     }
     fun notifyAttachments(hasAttachment: Boolean) {
         this.hasAttachment = hasAttachment
-        getAttachments()
+        getAttachments(true)
     }
     private fun setListVisible() { view.visibility = View.VISIBLE }
 
@@ -140,7 +142,6 @@ class AttachmentRecyclerAdapter (
                 }
 
                 thisView.setOnClickListener {
-                    Log.d("Attach", "Click")
                     context.startActivity(
                             Intent(context, AttachmentDetailsActivity::class.java)
                                     .putExtra(POSITION, position)

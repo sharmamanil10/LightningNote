@@ -11,7 +11,6 @@ import android.provider.MediaStore
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.RemoteInput
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import com.dev.nihitb06.lightningnote.MainActivity
 import com.dev.nihitb06.lightningnote.MainActivity.Companion.OPEN_NOTE_ID
 import com.dev.nihitb06.lightningnote.R
@@ -29,18 +28,14 @@ class ReminderNotificationService : Service() {
             var thisNote: Note? = null
             val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(this)
 
-            Log.d("Notification", "onStartCommand: ")
-
             val reminderId = intent?.getLongExtra(REMINDER_ID, -1) ?: -1
             if(reminderId != -1L) {
                 if(!lightningNoteDatabase.reminderDao().getReminderById(reminderId).isCancelled) {
                     try {
                         thisNote = lightningNoteDatabase.noteDao().getNoteById(intent!!.getLongExtra(NOTE_ID, -1))
                     } catch (e: Exception) {
-                        Log.e("Notification", "Message: "+e.message)
+                        e.printStackTrace()
                     }
-
-                    Log.d("Notification", "onStartCommand: Not Cancelled")
 
                     val isHigh = intent?.getBooleanExtra(PRIORITY, false) ?: false
 
@@ -71,22 +66,18 @@ class ReminderNotificationService : Service() {
                                 .setAutoCancel(true)
 
                         if(thisNote.hasAttachment) {
-                            Log.d("Notification", "onStartCommand: Has Attachment: true")
                             val imgUri = lightningNoteDatabase.attachmentDao().getImageForList(thisNote.id)
 
                             try {
                                 val bmp = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(imgUri))
-                                Log.d("Notification", "onStartCommand: Bmp: "+bmp)
                                 notificationBuilder
                                         .setLargeIcon(bmp)
                                         .setStyle(
                                                 NotificationCompat.BigPictureStyle().setSummaryText(thisNote.body)
                                                 .bigPicture(bmp)
                                         )
-                                Log.d("Notification", "onStartCommand: Bmp: "+bmp+" Set")
                             } catch (e: Exception) {
                                 e.printStackTrace()
-                                Log.d("Notification", "onStartCommand: Exception Setting Image")
                                 if(thisNote.body != "")
                                     notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(thisNote.body))
                             }
@@ -108,9 +99,7 @@ class ReminderNotificationService : Service() {
                                     )
                             ).build()).setColor(color).setGroup(GROUP_KEY)
 
-                            Log.d("MultiSelect", "Count: "+count)
                             if(count > 300) {
-                                Log.d("MultiSelect", "Summary Setting")
                                 val style = NotificationCompat.InboxStyle()
                                         .setBigContentTitle(getString(R.string.app_name))
                                         .setSummaryText(GROUP_SUMMARY_TEXT)

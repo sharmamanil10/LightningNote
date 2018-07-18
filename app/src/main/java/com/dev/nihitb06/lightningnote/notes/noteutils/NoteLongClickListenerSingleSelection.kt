@@ -10,7 +10,6 @@ import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.support.v4.content.FileProvider
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.webkit.MimeTypeMap
@@ -50,8 +49,6 @@ class NoteLongClickListenerSingleSelection (
             setSelected(thisView, 24f, 6f)
         }
 
-        Log.d("Blur", visibleViews.size.toString())
-
         blur()
         setSelected(thisView, ELEVATION_START, ELEVATION_END)
 
@@ -65,7 +62,6 @@ class NoteLongClickListenerSingleSelection (
 
         }.start()
         visibleViews.filter { it != thisView }.map { view: View ->
-            Log.d("Blur", view.toString())
             (context as Activity).runOnUiThread {
                 (view.frameLayout).foreground = BitmapDrawable(
                         context.resources,

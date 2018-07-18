@@ -4,7 +4,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.util.Log
 
 class ShakeListener (private val onShakeListener: OnShakeListener) : SensorEventListener {
 
@@ -26,11 +25,9 @@ class ShakeListener (private val onShakeListener: OnShakeListener) : SensorEvent
             val now = System.currentTimeMillis()
 
             if(shakeTimeStamp + SHAKE_INTERMITTENT_TIME_MS > now) {
-                Log.d("Shake", "OnSensorChanged: Too early")
                 return
             }
             if(shakeTimeStamp + SHAKE_RESET_TIME_MS < now) {
-                Log.d("Shake", "OnSensorChanged: Too Late")
                 shakeCount = 0
             }
 

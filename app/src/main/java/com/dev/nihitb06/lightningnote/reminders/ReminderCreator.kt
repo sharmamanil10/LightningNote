@@ -4,7 +4,6 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.TextInputEditText
-import android.util.Log
 import android.widget.Button
 import android.widget.Switch
 import com.dev.nihitb06.lightningnote.R
@@ -19,11 +18,8 @@ class ReminderCreator (private val context: Context, private val noteIds: Array<
     private var isHigh = false
 
     fun createReminder() {
-        Log.d("Reminder", "createReminder: begins")
         DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            Log.d("Reminder", "createReminder: DatePicker")
             TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                Log.d("Reminder", "createReminder: TimePicker")
                 val dialog = Dialog(context)
                 dialog.setContentView(R.layout.layout_reminder_message_dialog)
 
@@ -41,7 +37,6 @@ class ReminderCreator (private val context: Context, private val noteIds: Array<
     }
 
     private fun setReminder(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
-        Log.d("Reminder", "setReminder: setReminder")
         Thread {
             for(noteId in noteIds) {
                 val reminderId = LightningNoteDatabase.getDatabaseInstance(context)

@@ -106,6 +106,23 @@
                 android:layout_height="wrap_content"
                 style="@style/AppTheme.ClickableView" />
 
+            <View
+                android:id="@+id/dividerThree"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor" />
+
+            <TextView
+                android:id="@+id/privacyPolicy"
+                android:text="@string/privacy"
+                android:textSize="@dimen/size_text_default"
+                android:textColor="?android:textColorPrimary"
+                android:paddingTop="@dimen/padding_margin_default"
+                android:paddingBottom="@dimen/padding_margin_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.ClickableView" />
+
         </LinearLayout>
 
     </ScrollView>

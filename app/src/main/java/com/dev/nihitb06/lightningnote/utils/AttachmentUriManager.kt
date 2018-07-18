@@ -9,11 +9,9 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Environment
-import android.os.Handler
 import android.provider.MediaStore
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.widget.Toast
 import com.dev.nihitb06.lightningnote.MainActivity
 import com.dev.nihitb06.lightningnote.R
@@ -60,7 +58,7 @@ class AttachmentUriManager (private val context: Context, private val noteId: Lo
             }
             2 -> {
                 AudioUtils.recordAudio(context, noteId, adapter, isNoteBeingAdded)
-                (context as MainActivity).updateNote(noteId)
+                (context as MainActivity).updateNote()
                 return
             }
             3 -> {
@@ -84,21 +82,28 @@ class AttachmentUriManager (private val context: Context, private val noteId: Lo
                             val locationUri = location.latitude.toString() + ":" + location.longitude.toString()
                             Thread {
                                 val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(context)
-                                if(isNoteBeingAdded) (context as MainActivity).saveNote(AddNoteFragment.returnNote(), false).let {
-                                    lightningNoteDatabase.attachmentDao().createAttachment(
-                                            Attachment(locationUri, noteId, Attachment.GEO_LOCATION)
-                                    )
+                                var id = noteId
+                                if(isNoteBeingAdded && !MainActivity.getReturningFromAttachment()) {
+                                    id = lightningNoteDatabase.noteDao().insertNote(AddNoteFragment.returnNote())
+                                    AddNoteFragment.setNote(lightningNoteDatabase.noteDao().getNoteById(id))
+                                    MainActivity.setReturningFromAttachment(true)
+                                }
 
-                                    (context as Activity).runOnUiThread {
-                                        Toast.makeText(context, "Location Stored!!", Toast.LENGTH_SHORT).show()
-                                        //adapter?.notifyAttachments(true)
-                                    }
+                                lightningNoteDatabase.attachmentDao().createAttachment(
+                                        Attachment(locationUri, id, Attachment.GEO_LOCATION)
+                                )
+
+                                (context as Activity).runOnUiThread {
+                                    Toast.makeText(context, "Location Stored!!", Toast.LENGTH_SHORT).show()
+
+                                    (context as MainActivity).updateNote()
+                                    adapter?.notifyAttachments(true)
                                 }
                             }.start()
                         } ?: Toast.makeText(context, "Kindly Turn on your GPS", Toast.LENGTH_SHORT).show()
                     }
 
-                (context as MainActivity).updateNote(noteId)
+                (context as MainActivity).updateNote()
                 return
             }
             else -> {}
@@ -138,15 +143,12 @@ class AttachmentUriManager (private val context: Context, private val noteId: Lo
                             }
                     ))
 
-                    (context as Activity).runOnUiThread {
-                        /*Handler().postDelayed({
+                    val start = System.currentTimeMillis()
+                    while (System.currentTimeMillis() < start + 500);
 
-                        }, 100)*/
-                        (context as MainActivity).updateNote(noteId)
+                    (context as MainActivity).updateNote()
 
-
-                        notificationManager?.cancel(NOTIFICATION)
-                    }
+                    notificationManager?.cancel(NOTIFICATION)
                     adapter?.notifyAttachments(true)
                 }, "Save").start()
             } catch (e: NoSuchFileException) {

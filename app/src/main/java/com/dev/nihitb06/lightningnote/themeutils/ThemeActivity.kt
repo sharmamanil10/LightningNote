@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import com.dev.nihitb06.lightningnote.R
 
 abstract class ThemeActivity : AppCompatActivity() {
@@ -15,7 +14,6 @@ abstract class ThemeActivity : AppCompatActivity() {
     private lateinit var currentTheme: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("FirstCrash", "onCreate: ")
         if(!::currentTheme.isInitialized)
             initializeCurrentTheme()
 

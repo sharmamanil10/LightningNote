@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
-import android.util.Log
 import com.dev.nihitb06.lightningnote.R
 import com.dev.nihitb06.lightningnote.databaseutils.LightningNoteDatabase
 import com.dev.nihitb06.lightningnote.reminders.ReminderCreator.Companion.NOTE_ID
@@ -23,16 +22,12 @@ import com.dev.nihitb06.lightningnote.reminders.ReminderNotificationService.Comp
 class ManageNotificationActionService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-        Log.d("notification", "onStartCommand: ManageService")
-
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationId = intent?.getIntExtra(NOTIFICATION_ID, -1) ?: -1
         val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(this)
 
         when (intent?.getStringExtra(ACTION)) {
             NOTIFICATION_CANCEL -> {
-                Log.d("notification", "onStartCommand: NOTIFICATION_CANCEL "+notificationId)
                 if(notificationId != -1) {
                     notificationManager.cancel(notificationId)
                     count--
@@ -41,7 +36,6 @@ class ManageNotificationActionService : Service() {
 
             NOTIFICATION_NOTE_UPDATE -> {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-                    Log.d("notification", "onStartCommand: NOTIFICATION_UPDATE")
                     val remoteInput = RemoteInput.getResultsFromIntent(intent)
                     remoteInput?.let {
                         Thread {

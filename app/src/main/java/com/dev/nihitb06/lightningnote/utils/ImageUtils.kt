@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Environment
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -45,8 +44,6 @@ class ImageUtils {
             val targetWidth = imageView?.measuredWidth ?: 0
             val targetHeight = imageView?.measuredHeight ?: 0
 
-            Log.d("ATTACH", "Target width: "+targetWidth+"height: "+targetHeight)
-
             val bmOptions = BitmapFactory.Options()
             bmOptions.inJustDecodeBounds = true
 
@@ -54,8 +51,6 @@ class ImageUtils {
                 BitmapFactory.decodeFile(filePath, bmOptions)
                 val photoWidth = bmOptions.outWidth
                 val photoHeight = bmOptions.outHeight
-
-                Log.d("ATTACH", "Photo width: "+photoWidth+"height: "+photoHeight)
 
                 val scaleFactor = try {
                     Math.min(photoWidth/targetWidth, photoHeight/targetHeight)

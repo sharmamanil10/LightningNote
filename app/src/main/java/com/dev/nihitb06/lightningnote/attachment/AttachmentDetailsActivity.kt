@@ -2,7 +2,6 @@ package com.dev.nihitb06.lightningnote.attachment
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.dev.nihitb06.lightningnote.R
 import kotlinx.android.synthetic.main.activity_attachment_details.*
 
@@ -17,12 +16,6 @@ class AttachmentDetailsActivity : AppCompatActivity() {
         try {
             val parcelablesArray = intent!!.getParcelableArrayExtra(URIS)
             val attachmentParcelables = Array(parcelablesArray?.size ?: 0) { parcelablesArray?.get(it) as AttachmentParcelable }
-
-            Thread {
-                for(attachmentParcelable in attachmentParcelables) {
-                    Log.d("Attach", "Type: "+attachmentParcelable.type + " Uri: "+attachmentParcelable.uri)
-                }
-            }.start()
 
             attachmentpager.adapter = AttachmentPagerAdapter(attachmentParcelables, supportFragmentManager)
             attachmentpager.currentItem = intent?.getIntExtra(POSITION, 0) ?: 0

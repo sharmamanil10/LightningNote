@@ -122,9 +122,11 @@
 
     <!-- About App String -->
     <string name="version_placeholder">Version: %1$s</string>
-    <string name="app_description">This is an app description to be updated as seen fit later</string>
+    <string name="app_description">Make and Share Lightning Fast Notes. Just shake twice to add a note</string>
     <string name="open_source">Open Source Licenses</string>
     <string name="assets">Image Assets Used</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="policy_link">https://www.freeprivacypolicy.com/privacy/view/fac0d31948ed488fcd947f108f33f7ee</string>
 
     <!-- Image Assets Used -->
     <string name="asset_name">Rack, Server, Lightning Icon</string>
@@ -132,10 +134,4 @@
     <string name="asset_link">https://icon-icons.com/icon/rack-server-lightning/52828</string>
     <string name="asset_modified">Modified from Original</string>
     <string name="content_desc_asset">Rack, Server and Lightning Icon used as App Icon after Modification</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
-    <string name="add_widget">Add widget</string>
 </resources>

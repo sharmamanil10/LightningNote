@@ -13,7 +13,6 @@ import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import com.dev.nihitb06.lightningnote.appsettings.SettingsFragment
@@ -51,8 +50,6 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         Handler().postDelayed({ switchFragment(ShowNoteFragment.newInstance(this@MainActivity, noteId), TAG_SHOW) }, 200)
     }
 
-    private var returningFromAttachment = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setNoActionBarTheme()
@@ -60,7 +57,6 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
 
         setupToolbarAndNavigation()
 
-        Log.d("Single", "onCreate: ")
         onNavigationItemSelected(navBarContainer.menu.findItem(R.id.notes))
 
         if(PreferenceManager.getDefaultSharedPreferences(this)
@@ -70,7 +66,6 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        Log.d("Single", "onNewIntent: ")
 
         val addNote = intent?.getBooleanExtra(ADD_NOTE_BOOLEAN, false) ?: false
         val openNoteId = intent?.getLongExtra(OPEN_NOTE_ID, -1L) ?: 0L
@@ -147,7 +142,7 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
 
     private fun closeDrawer() { drawerLayout.closeDrawer(GravityCompat.START) }
 
-    fun saveNote(newNote: Note, fromAttachment: Boolean) {
+    private fun saveNote(newNote: Note, fromAttachment: Boolean) {
         if(newNote.id != 0L) {
             updateNote(newNote, fromAttachment)
             return
@@ -251,7 +246,6 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d("DEBUG_ADD", "onActivityResult")
 
         if(requestCode == SettingsFragment.REQUEST_CODE_DRAW_OVERLAY) {
             if(resultCode == PackageManager.PERMISSION_GRANTED) {
@@ -262,18 +256,32 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         } else {
             Thread {
                 val lightningNoteDatabase = LightningNoteDatabase.getDatabaseInstance(this)
-                Log.d("DEBUG_ADD", "Workflow Fine 0")
-                val noteId = when {
+                var noteId = when {
                     currentFragment == TAG_ADD && !returningFromAttachment -> {
                         lightningNoteDatabase.noteDao().insertNote(AddNoteFragment.returnNote())
                     }
-                    currentFragment == TAG_ADD -> AddNoteFragment.returnNote().id
-                    else -> ShowNoteFragment.returnNote().id
+                    currentFragment == TAG_ADD -> {
+                        AddNoteFragment.returnNote().id
+                    }
+                    else -> {
+                        ShowNoteFragment.returnNote().id
+                    }
                 }
+                if(noteId == 0L)
+                    noteId = lightningNoteDatabase.noteDao().insertNote(AddNoteFragment.returnNote())
+
+                val start = System.currentTimeMillis()
+                while (System.currentTimeMillis() < start+500);
+
                 val attachmentUriManager = AttachmentUriManager(this, noteId)
                 if(resultCode == Activity.RESULT_OK) {
                     if(currentFragment == TAG_ADD) {
-                        Log.d("DEBUG_ADD", "NoteID: "+noteId)
+                        if(AddNoteFragment.returnNote().id == 0L)
+                            try {
+                                AddNoteFragment.setNote(lightningNoteDatabase.noteDao().getNoteById(noteId))
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         returningFromAttachment = true
                     }
 
@@ -299,8 +307,7 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
                                 adapter?.notifyAttachments(true)
 
                                 runOnUiThread {
-                                    Log.d("DEBUG_ADD", "Workflow Fine so Far")
-                                    updateNote(noteId)
+                                    updateNote()
                                 }
                             }
                         }
@@ -321,9 +328,8 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         }
     }
 
-    fun updateNote(noteId: Long) {
+    fun updateNote() {
         updateNote(if(currentFragment == TAG_ADD) AddNoteFragment.returnNote() else ShowNoteFragment.returnNote(), true)
-        startActivity(Intent(this, MainActivity::class.java).putExtra(OPEN_NOTE_ID, noteId))
     }
 
     companion object {
@@ -339,5 +345,11 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         const val ADD_NOTE_BOOLEAN = "AddNote"
 
         var capturePhotoFilePath = ""
+
+        private var returningFromAttachment = false
+        fun setReturningFromAttachment(returningFromAttachment: Boolean) {
+            this.returningFromAttachment = returningFromAttachment
+        }
+        fun getReturningFromAttachment() = returningFromAttachment
     }
 }

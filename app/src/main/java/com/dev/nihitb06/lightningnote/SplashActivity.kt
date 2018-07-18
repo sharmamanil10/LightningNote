@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import com.dev.nihitb06.lightningnote.apptour.AppTourActivity
 import com.dev.nihitb06.lightningnote.themeutils.ThemeActivity
 
@@ -21,13 +22,14 @@ class SplashActivity : ThemeActivity() {
         val savedVersionCode = preferences.getInt(PREFERENCE_KEY, DEFAULT_VERSION_NUMBER)
 
         when {
+            savedVersionCode == DEFAULT_VERSION_NUMBER -> {
+                Log.d("TAG", savedVersionCode.toString())
+                editPreference(preferences, currentVersionCode)
+                goToAppTourActivity()
+            }
             savedVersionCode < currentVersionCode -> {
                 editPreference(preferences, currentVersionCode)
                 goToMainActivity()
-            }
-            savedVersionCode == DEFAULT_VERSION_NUMBER -> {
-                editPreference(preferences, currentVersionCode)
-                goToAppTourActivity()
             }
             else -> goToMainActivity()
         }

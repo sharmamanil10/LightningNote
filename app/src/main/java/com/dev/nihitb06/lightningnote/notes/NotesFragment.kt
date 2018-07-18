@@ -10,7 +10,6 @@ import android.preference.PreferenceManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 
@@ -83,7 +82,8 @@ class NotesFragment : Fragment() {
             override fun onGlobalLayout() {
                 itemView.progress.visibility = View.GONE
                 rvNotesList.visibility = View.VISIBLE
-                itemView.fabAddNotes.visibility = View.VISIBLE
+                if(!showOnlyStarred && !showOnlyDeleted)
+                    itemView.fabAddNotes.visibility = View.VISIBLE
 
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     rvNotesList.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -94,15 +94,7 @@ class NotesFragment : Fragment() {
         })
         setScroll()
 
-        if(showOnlyStarred || showOnlyDeleted) {
-            Log.d("DEBUG_USELESS", "onlyStarred: "+showOnlyStarred +" onlyDeleted: "+showOnlyDeleted)
-            itemView.fabAddNotes.visibility = View.GONE
-        }
-
-        else
-            itemView.fabAddNotes.setOnClickListener { v: View? ->  onFABClickListener?.onClick(v) }
-
-        Log.d("LATE_INIT", "onCreateView: ")
+        itemView.fabAddNotes.setOnClickListener { v: View? ->  onFABClickListener?.onClick(v) }
 
         return itemView
     }
@@ -188,8 +180,6 @@ class NotesFragment : Fragment() {
                 onNoteClickListener: OnNoteClickListener
         ): NotesFragment {
             val fragment = NotesFragment()
-
-            Log.d("LATE_INIT", "newInstance: ")
 
             fragment.fragmentContext = context
             fragment.showOnlyStarred = showOnlyStarred

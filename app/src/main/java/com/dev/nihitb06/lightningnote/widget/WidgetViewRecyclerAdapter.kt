@@ -1,8 +1,6 @@
 package com.dev.nihitb06.lightningnote.widget
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +21,6 @@ class WidgetViewRecyclerAdapter (
             thisView.tvNoteBody.text = note.body
 
             thisView.contentArea.setOnClickListener {
-                Log.d("WidgetLightning", "click: ")
                 onNoteClickListener.onNoteClick(note.id)
             }
         }

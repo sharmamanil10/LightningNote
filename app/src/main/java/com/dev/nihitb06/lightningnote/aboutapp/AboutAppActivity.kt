@@ -47,6 +47,16 @@ class AboutAppActivity : ThemeActivity() {
 
             dialog.show()
         }
+        privacyPolicy.setOnClickListener {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.policy_link))))
+            } catch (e: MalformedURLException) {
+                e.printStackTrace()
+                Snackbar.make(root, "Something Went Wrong", Snackbar.LENGTH_SHORT).show()
+            } catch (e: ActivityNotFoundException) {
+                Snackbar.make(root, "No Activity can Handle the Action", Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setToolbar() {
