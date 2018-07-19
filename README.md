@@ -8,7 +8,7 @@ Lightning Note aims to be a *lightweight* but still *powerful*, *open-source* no
 The primary purpose of this application was to be a different sort of Notepad, one that *comes to the user*. So the user just has to **shake the phone twice** and the app will open itself.
 The App also aims to implement a *Floating Note Helper* for phones without the accelerometer installed for detecting shaking action.
 
-<a href='https://play.google.com/store/apps/details?id=com.dev.nihitb06.lightningnote&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=com.dev.nihitb06.lightningnote&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="90" /></a>
 
 ## Features
 
@@ -23,6 +23,7 @@ Lightning Note takes advantage of Google's Material Design style to create a com
 <b>Not Just Text</b>
 Vanilla Text is so passé, Lightning Note comes with out of the box support for adding more than just Text to your notes.
 Annotate your notes with:<br />&#8226;&#8195;Images<br />&#8226;&#8195;Video<br />&#8226;&#8195;Audio<br />&#8226;&#8195;Location<br />
+
 <b>Find important things faster</b>
 Whether it be starring your notes so you keep track of them, sorting them in order of creation/updation or just straight up searching for them using text, We've got you covered.
 
