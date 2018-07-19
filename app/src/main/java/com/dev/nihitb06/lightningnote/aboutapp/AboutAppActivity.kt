@@ -34,29 +34,12 @@ class AboutAppActivity : ThemeActivity() {
 
             dialog.setContentView(R.layout.layout_image_assets_used)
 
-            dialog.findViewById<ConstraintLayout>(R.id.assetItem).setOnClickListener {
-                try {
-                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.asset_link))))
-                } catch (e: MalformedURLException) {
-                    e.printStackTrace()
-                    Snackbar.make(root, "Something Went Wrong", Snackbar.LENGTH_SHORT).show()
-                } catch (e: ActivityNotFoundException) {
-                    Snackbar.make(root, "No Activity can Handle the Action", Snackbar.LENGTH_SHORT).show()
-                }
-            }
+            dialog.findViewById<ConstraintLayout>(R.id.assetItem).setOnClickListener { openLink(getString(R.string.asset_link)) }
 
             dialog.show()
         }
-        privacyPolicy.setOnClickListener {
-            try {
-                startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.policy_link))))
-            } catch (e: MalformedURLException) {
-                e.printStackTrace()
-                Snackbar.make(root, "Something Went Wrong", Snackbar.LENGTH_SHORT).show()
-            } catch (e: ActivityNotFoundException) {
-                Snackbar.make(root, "No Activity can Handle the Action", Snackbar.LENGTH_SHORT).show()
-            }
-        }
+        privacyPolicy.setOnClickListener { openLink(getString(R.string.policy_link)) }
+        githubLink.setOnClickListener { openLink(getString(R.string.github_link)) }
     }
 
     private fun setToolbar() {
@@ -64,5 +47,14 @@ class AboutAppActivity : ThemeActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    private fun openLink(url: String) = try {
+        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+    } catch (e: MalformedURLException) {
+        e.printStackTrace()
+        Snackbar.make(root, "Something Went Wrong", Snackbar.LENGTH_SHORT).show()
+    } catch (e: ActivityNotFoundException) {
+        Snackbar.make(root, "No Activity can Handle the Action", Snackbar.LENGTH_SHORT).show()
     }
 }

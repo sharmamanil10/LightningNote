@@ -126,12 +126,15 @@
     <string name="open_source">Open Source Licenses</string>
     <string name="assets">Image Assets Used</string>
     <string name="privacy">Privacy Policy</string>
-    <string name="policy_link">https://www.freeprivacypolicy.com/privacy/view/fac0d31948ed488fcd947f108f33f7ee</string>
 
     <!-- Image Assets Used -->
     <string name="asset_name">Rack, Server, Lightning Icon</string>
     <string name="asset_license">License:  CC Attribution 3.0 UnPorted</string>
-    <string name="asset_link">https://icon-icons.com/icon/rack-server-lightning/52828</string>
     <string name="asset_modified">Modified from Original</string>
     <string name="content_desc_asset">Rack, Server and Lightning Icon used as App Icon after Modification</string>
+
+    <!-- Links -->
+    <string name="asset_link">https://icon-icons.com/icon/rack-server-lightning/52828</string>
+    <string name="policy_link">https://www.freeprivacypolicy.com/privacy/view/fac0d31948ed488fcd947f108f33f7ee</string>
+    <string name="github_link">https://github.com/nihitb06/LightningNote</string>
 </resources>

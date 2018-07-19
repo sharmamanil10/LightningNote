@@ -49,7 +49,7 @@
                     android:id="@+id/tvNoteTitle"
                     android:textSize="@dimen/size_text_header"
                     android:textColor="?android:textColorPrimary"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     android:layout_marginBottom="@dimen/padding_margin_default"
                     android:layout_width="match_parent"

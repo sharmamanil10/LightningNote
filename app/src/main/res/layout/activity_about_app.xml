@@ -74,6 +74,17 @@
                 android:textStyle="italic"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/padding_margin_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/githubLink"
+                android:text="@string/github_link"
+                android:textSize="@dimen/size_text_default"
+                android:textColor="@color/colorBluePrimary"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/padding_margin_small"
                 android:layout_marginBottom="@dimen/padding_margin_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

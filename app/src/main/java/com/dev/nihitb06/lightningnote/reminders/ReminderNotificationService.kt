@@ -43,7 +43,7 @@ class ReminderNotificationService : Service() {
                         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             notificationManager.createNotificationChannel(
-                                    NotificationChannel(CHANNEL_ID, NAME, if (isHigh) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT)
+                                    NotificationChannel(CHANNEL_ID, NAME, if (isHigh) NotificationManager.IMPORTANCE_MAX else NotificationManager.IMPORTANCE_DEFAULT)
                             )
                         }
                         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)

@@ -38,7 +38,7 @@ class ShakeToNoteService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        sensorManager.registerListener(shakeListener, accelerometer, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(shakeListener, accelerometer, SensorManager.SENSOR_DELAY_GAME)
         startForeground(FOREGROUND_NOTIFICATION_ID, buildNotification())
         return START_NOT_STICKY
     }
