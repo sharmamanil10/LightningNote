@@ -4,6 +4,12 @@
   },
   "detail": {
     "contributors": [],
-    "diagrams": []
+    "diagrams": [
+      {
+        "title": "title",
+        "thumbnail": "./public/content/images/thumbnail.jpg",
+        "id": 0
+      }
+    ]
   }
 }
