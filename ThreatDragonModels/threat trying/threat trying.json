@@ -1,15 +1,18 @@
 {
   "summary": {
-    "title": "threat trying"
+    "title": "threat trying",
+    "owner": "diagrma",
+    "description": "we trying this stuff"
   },
   "detail": {
     "contributors": [],
     "diagrams": [
       {
-        "title": "trial 1",
+        "title": "dig",
         "thumbnail": "./public/content/images/thumbnail.jpg",
         "id": 0
       }
-    ]
+    ],
+    "reviewer": "diagrama"
   }
 }
